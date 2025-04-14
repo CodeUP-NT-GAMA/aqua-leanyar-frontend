@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "codeup",
-    "slug": "codeup",
+    "name": "aqua-leanyar-frontend",
+    "slug": "aqua-leanyar-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

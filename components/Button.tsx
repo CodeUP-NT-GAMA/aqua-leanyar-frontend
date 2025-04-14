@@ -6,7 +6,7 @@ type Props = {
     theme?: 'primary';
 };
 
-export default function Button({ label, theme }: Props) {
+export default function Button({ label, theme }: Readonly<Props>) {
     if (theme === 'primary') {
         return (
             <View

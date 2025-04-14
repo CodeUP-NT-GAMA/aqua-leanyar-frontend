@@ -7,7 +7,7 @@ const PlaceholderImage = require('@/assets/images/logo-3.png');
 
 export default function Index() {
     return (
-        <View style={styles.container}>
+        <View style={styles.container} className="container">
             <View style={styles.imageContainer}>
                 <ImageViewer imgSource={PlaceholderImage} />
             </View>

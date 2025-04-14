@@ -5,7 +5,7 @@ type Props = {
     imgSource: ImageSource;
 };
 
-export default function ImageViewer({ imgSource }: Props) {
+export default function ImageViewer({ imgSource }: Readonly<Props>) {
     return <Image source={imgSource} style={styles.image} />;
 }
 

@@ -2,27 +2,30 @@ import { StyleSheet, View } from "react-native";
 
 import Button from "@/components/Button";
 import ImageViewer from "@/components/ImageViewer";
+import GlobalViewLayout from "@/components/layout/GlobalViewLayout";
 
 const PlaceholderImage = require("@/assets/images/logo-3.png");
 
 export default function Index() {
   return (
-    <View style={styles.container} className="container">
-      <View style={styles.imageContainer}>
-        <ImageViewer imgSource={PlaceholderImage} />
+    <GlobalViewLayout>
+      <View style={styles.container} className="container">
+        <View style={styles.imageContainer}>
+          <ImageViewer imgSource={PlaceholderImage} />
+        </View>
+        <View style={styles.footerContainer}>
+          <Button theme="primary" label="Choose a photo" />
+          <Button label="Use this photo" />
+        </View>
       </View>
-      <View style={styles.footerContainer}>
-        <Button theme="primary" label="Choose a photo" />
-        <Button label="Use this photo" />
-      </View>
-    </View>
+    </GlobalViewLayout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     alignItems: "center",
   },
   imageContainer: {

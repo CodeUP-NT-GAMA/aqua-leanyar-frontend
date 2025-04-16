@@ -1,35 +1,35 @@
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from "react-native";
 
-import Button from '@/components/Button';
-import ImageViewer from '@/components/ImageViewer';
+import Button from "@/components/Button";
+import ImageViewer from "@/components/ImageViewer";
 
-const PlaceholderImage = require('@/assets/images/logo-3.png');
+const PlaceholderImage = require("@/assets/images/logo-3.png");
 
 export default function Index() {
-    return (
-        <View style={styles.container} className="container">
-            <View style={styles.imageContainer}>
-                <ImageViewer imgSource={PlaceholderImage} />
-            </View>
-            <View style={styles.footerContainer}>
-                <Button theme="primary" label="Choose a photo" />
-                <Button label="Use this photo" />
-            </View>
-        </View>
-    );
+  return (
+    <View style={styles.container} className="container">
+      <View style={styles.imageContainer}>
+        <ImageViewer imgSource={PlaceholderImage} />
+      </View>
+      <View style={styles.footerContainer}>
+        <Button theme="primary" label="Choose a photo" />
+        <Button label="Use this photo" />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-    },
-    imageContainer: {
-        flex: 1,
-    },
-    footerContainer: {
-        flex: 1 / 3,
-        alignItems: 'center',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: "center",
+  },
 });

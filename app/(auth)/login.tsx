@@ -5,7 +5,7 @@ import SocialButton from "../components/buttons/SocialButton";
 export default function LoginScreen() {
     const handleLogin = () => {
         // TODO: Replace with real auth logic
-        router.replace("/"); // Navigate to home if logged in
+        router.replace("/(tabs)/homeSreen"); // Navigate to home if logged in
     };
 
     return (

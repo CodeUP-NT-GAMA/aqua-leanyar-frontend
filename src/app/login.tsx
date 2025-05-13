@@ -10,9 +10,11 @@ import TextInput from "@/components/TextInput";
 import {Text} from "react-native-paper";
 import {theme} from "@/theme/theme";
 import Header from "@/components/Header";
+import {useRouter} from "expo-router";
 
 export default function LoginScreen() {
     const authContext = useContext(AuthContext);
+    const router = useRouter();
 
     const [email, setEmail] = useState({value: "", error: ""});
     const [password, setPassword] = useState({value: "", error: ""});
@@ -34,7 +36,7 @@ export default function LoginScreen() {
 
         <Background>
             <Logo/>
-            <Header>Hello.</Header>
+            <Header>Welcome Back!</Header>
             <TextInput
                 label="Email"
                 returnKeyType="next"
@@ -72,7 +74,7 @@ export default function LoginScreen() {
             </View>
             <View style={styles.row}>
                 <TouchableOpacity
-                    // onPress={() => navigation.replace("RegisterScreen")}
+                    onPress={() => router.replace("/register")}
                 >
                     <Text style={styles.link}>Create !</Text>
                 </TouchableOpacity>

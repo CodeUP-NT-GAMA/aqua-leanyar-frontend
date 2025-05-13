@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SplashScreen, useRouter} from "expo-router";
 import {createContext, PropsWithChildren, useEffect, useState} from "react";
+import {LoginService} from "@/service/LoginService"
+import {Alert} from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -12,6 +14,19 @@ type AuthState = {
 };
 
 const authStorageKey = "auth-key";
+
+// Function to display an alert dialog
+const alert = () => {
+    Alert.alert( // Display an alert dialog
+        "Oops!", // Title of the alert
+        "That password didn't work.", // Message of the alert
+        [
+            {
+                text: "Try Again", // Button with try again text
+            }
+        ]
+    );
+}
 
 export const AuthContext = createContext<AuthState>({
     isLoggedIn: false,
@@ -37,10 +52,22 @@ export function AuthProvider({children}: PropsWithChildren) {
     };
 
     const logIn = (email: string, password: string) => {
-        console.log("logIn", email, password);
-        setIsLoggedIn(true);
-        storeAuthState({isLoggedIn: true});
-        router.replace("/");
+
+        LoginService.login(email, password)
+            .catch((err: Error) => {
+                console.log("Error calling Login API", err);
+            })
+            .then(token => {
+                console.log(token);
+                if (token != undefined) {
+                    setIsLoggedIn(true);
+                    storeAuthState({isLoggedIn: true});
+                    router.replace("/");
+                } else {
+                    alert();
+                }
+            });
+
     };
 
     const logOut = () => {

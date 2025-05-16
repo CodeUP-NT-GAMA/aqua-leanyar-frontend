@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SplashScreen, useRouter} from "expo-router";
 import {createContext, PropsWithChildren, useEffect, useState} from "react";
-import {LoginService} from "@/service/LoginService"
 import {Alert} from "react-native";
 
 SplashScreen.preventAutoHideAsync();
@@ -54,8 +53,8 @@ export function AuthProvider({children}: PropsWithChildren) {
     const logIn = (email: string, password: string) => {
 
         setIsLoggedIn(true);
-                    storeAuthState({isLoggedIn: true});
-                    router.replace("/");
+        storeAuthState({isLoggedIn: true});
+        router.replace("/");
 
         // LoginService.login(email, password)
         //     .catch((err: Error) => {

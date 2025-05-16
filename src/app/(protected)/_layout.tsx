@@ -80,7 +80,7 @@ export default function RootLayout() {
                     }}
                 />
                 <Tabs.Screen
-                    name="fourth"
+                    name="(profile)"
                     options={{
                         title: "Profile",
                         tabBarIcon: ({color, size}) => (

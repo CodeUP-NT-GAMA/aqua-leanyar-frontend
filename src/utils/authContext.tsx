@@ -53,20 +53,24 @@ export function AuthProvider({children}: PropsWithChildren) {
 
     const logIn = (email: string, password: string) => {
 
-        LoginService.login(email, password)
-            .catch((err: Error) => {
-                console.log("Error calling Login API", err);
-            })
-            .then(token => {
-                console.log(token);
-                if (token != undefined) {
-                    setIsLoggedIn(true);
+        setIsLoggedIn(true);
                     storeAuthState({isLoggedIn: true});
                     router.replace("/");
-                } else {
-                    alert();
-                }
-            });
+
+        // LoginService.login(email, password)
+        //     .catch((err: Error) => {
+        //         console.log("Error calling Login API", err);
+        //     })
+        //     .then(token => {
+        //         console.log(token);
+        //         if (token != undefined) {
+        //             setIsLoggedIn(true);
+        //             storeAuthState({isLoggedIn: true});
+        //             router.replace("/");
+        //         } else {
+        //             alert();
+        //         }
+        //     });
 
     };
 

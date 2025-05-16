@@ -1,19 +1,22 @@
 import {useRouter} from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import CheckoutButton from "@/components/CheckoutButton";
+import {CheckoutService} from "@/service/CheckoutService";
 
 async function openPaymentModal(): Promise<void> {
-    //TODO Change this to axios & include auth header or it will not work!
-    const {url} = await fetch("http://192.168.1.46:3000/checkout/hosted", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            custom_donation: "12.56",
-        },
-    }).then((res) => res.json());
 
-    const router = useRouter();
-    console.log(url);
-    router.push(url);
+    const value = await AsyncStorage.getItem("auth-key");
+    if (value !== null) {
+        const auth = JSON.parse(value);
+
+        const response = await CheckoutService.createHostedSession(auth.token)
+
+        const router = useRouter();
+        // @ts-ignore
+        router.push(response.data.url);
+
+    }
+
 }
 
 export default function CheckoutForm() {

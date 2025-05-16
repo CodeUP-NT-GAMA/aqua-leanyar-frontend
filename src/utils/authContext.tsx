@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SplashScreen, useRouter} from "expo-router";
 import {createContext, PropsWithChildren, useEffect, useState} from "react";
 import {Alert} from "react-native";
+import {LoginService} from "@/service/LoginService";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,9 +40,10 @@ export const AuthContext = createContext<AuthState>({
 export function AuthProvider({children}: PropsWithChildren) {
     const [isReady, setIsReady] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [token, setToken] = useState(false);
     const router = useRouter();
 
-    const storeAuthState = async (newState: { isLoggedIn: boolean }) => {
+    const storeAuthState = async (newState: { isLoggedIn: boolean, token: string }) => {
         try {
             const jsonValue = JSON.stringify(newState);
             await AsyncStorage.setItem(authStorageKey, jsonValue);
@@ -52,30 +54,26 @@ export function AuthProvider({children}: PropsWithChildren) {
 
     const logIn = (email: string, password: string) => {
 
-        setIsLoggedIn(true);
-        storeAuthState({isLoggedIn: true});
-        router.replace("/");
-
-        // LoginService.login(email, password)
-        //     .catch((err: Error) => {
-        //         console.log("Error calling Login API", err);
-        //     })
-        //     .then(token => {
-        //         console.log(token);
-        //         if (token != undefined) {
-        //             setIsLoggedIn(true);
-        //             storeAuthState({isLoggedIn: true});
-        //             router.replace("/");
-        //         } else {
-        //             alert();
-        //         }
-        //     });
+        LoginService.login(email, password)
+            .catch((err: Error) => {
+                console.log("Error calling Login API", err);
+            })
+            .then(async token => {
+                console.log(token);
+                if (token != undefined) {
+                    setIsLoggedIn(true);
+                    await storeAuthState({isLoggedIn: true, token: token.data.token});
+                    router.replace("/");
+                } else {
+                    alert();
+                }
+            });
 
     };
 
     const logOut = () => {
         setIsLoggedIn(false);
-        storeAuthState({isLoggedIn: false});
+        storeAuthState({isLoggedIn: false, token: ''});
         // @ts-ignore
         router.replace("/login");
     };
@@ -89,6 +87,7 @@ export function AuthProvider({children}: PropsWithChildren) {
                 if (value !== null) {
                     const auth = JSON.parse(value);
                     setIsLoggedIn(auth.isLoggedIn);
+                    setToken(auth.token);
                 }
             } catch (error) {
                 console.log("Error fetching from storage", error);

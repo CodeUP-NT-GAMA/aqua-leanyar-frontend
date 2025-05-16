@@ -3,28 +3,31 @@ import * as Linking from "expo-linking";
 import {useEffect, useState} from "react";
 import {useStripe} from "@stripe/stripe-react-native";
 import CheckoutButton from "./CheckoutButton";
-import {axiosInstance} from "@/utils/backend";
-import {AxiosResponse} from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {CheckoutService} from "@/service/CheckoutService";
 
-interface IIntendResponse extends AxiosResponse {
-    paymentIntent: string;
-    ephemeralKey: string;
-    customer: string;
-}
 
-async function fetchPaymentSheetParams(): Promise<{
-    paymentIntent: string;
-    ephemeralKey: string;
-    customer: string;
-}> {
-    // return axiosInstance.post<IIntendResponse>("/checkout/intend");
+async function fetchPaymentSheetParams() {
 
-    return fetch(`http://192.168.1.46:3000/checkout/intend`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then((res) => res.json());
+    const value = await AsyncStorage.getItem("auth-key");
+
+    if (value !== null) {
+        const auth = JSON.parse(value);
+        let response = await CheckoutService.createPaymentIntend(auth.token);
+
+        return ({
+            paymentIntent: response.data.paymentIntent,
+            ephemeralKey: response.data.ephemeralKey,
+            customer: response.data.customer
+        });
+    } else {
+        return ({
+            paymentIntent: '',
+            ephemeralKey: '',
+            customer: ''
+        });
+    }
+
 }
 
 export default function CheckoutScreen() {
@@ -34,35 +37,22 @@ export default function CheckoutScreen() {
     const initializePaymentSheet = async () => {
 
         console.log("Initializing payment sheet");
-        const { paymentIntent, ephemeralKey, customer } =
-            await fetchPaymentSheetParams();
 
-
-        console.log("Axios Response", paymentIntent, ephemeralKey, customer);
-
+        const sheet = await fetchPaymentSheetParams();
+        const paymentIntent = sheet.paymentIntent;
+        const ephemeralKey = sheet.ephemeralKey;
+        const customer = sheet.customer;
 
         // Use Mock payment data: https://docs.stripe.com/payments/accept-a-payment?platform=react-native&ui=payment-sheet#react-native-test
         const {error} = await initPaymentSheet({
-            merchantDisplayName: "Expo, Inc.",
-
+            merchantDisplayName: "AquaLeanyer",
             customerId: customer,
             customerEphemeralKeySecret: ephemeralKey,
             paymentIntentClientSecret: paymentIntent,
             // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
             //methods that complete payment after a delay, like SEPA Debit and Sofort.
             allowsDelayedPaymentMethods: true,
-            defaultBillingDetails: {
-                name: "Jane Doe",
-                email: "jenny.rosen@example.com",
-                phone: "888-888-8888",
-            },
-            returnURL: Linking.createURL("stripe-redirect"),
-
-            // Enable Apple Pay:
-            // https://docs.stripe.com/payments/accept-a-payment?platform=react-native&ui=payment-sheet#add-apple-pay
-            // applePay: {
-            //     merchantCountryCode: "US",
-            // },
+            returnURL: Linking.createURL("stripe-redirect")
         });
         if (!error) {
             setLoading(true);

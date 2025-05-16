@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "aqua-leanyar",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -41,6 +41,13 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
+        }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "",
+          "publishableKey": "pk_test_51ROxpMCf4oaVDzHl263FbrmjLlWmz0qClB0X7QeijtmBMKwFwdLzFDfjZtlJGYJjlpGBq6jnerU3KHGppwhyys0U00AsBonRMy"
         }
       ]
     ],

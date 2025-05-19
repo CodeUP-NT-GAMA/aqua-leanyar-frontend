@@ -1,159 +1,123 @@
-import GeneralButton from "@/components/GeneralButton";
-import {AuthContext} from "@/utils/authContext";
-import {useContext, useState} from "react";
-import {ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";
+import React, {memo, useContext, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Background from '../components/general/Background';
+import Logo from '../components/general/Logo';
+import Header from '../components/general/Header';
+import Button from '../components/general/Button';
+import TextInput from '../components/general/TextInput';
+import {theme} from '@/theme/theme';
 import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
-import Background from "@/components/Background";
-import Logo from "@/components/Logo";
-import TextInput from "@/components/TextInput";
-import {Text} from "react-native-paper";
-import {theme} from "@/theme/theme";
-import Header from "@/components/Header";
+import {nameValidator} from "@/helper/nameValidator";
+import {AuthContext} from "@/utils/authContext";
 import {useRouter} from "expo-router";
+import {LoginService} from "@/service/LoginService";
 
-export default function LoginScreen() {
+
+// @ts-ignore
+const RegisterScreen = ({navigation}: Props) => {
     const authContext = useContext(AuthContext);
     const router = useRouter();
+    const [fname, setFname] = useState({value: '', error: ''});
+    const [lname, setLname] = useState({value: '', error: ''});
+    const [email, setEmail] = useState({value: '', error: ''});
+    const [password, setPassword] = useState({value: '', error: ''});
 
-    const [email, setEmail] = useState({value: "", error: ""});
-    const [password, setPassword] = useState({value: "", error: ""});
-
-    const onRegisterPressed = () => {
+    const _onSignUpPressed = async () => {
+        const fNameError = nameValidator(fname.value);
+        const lNameError = nameValidator(lname.value);
         const emailError = emailValidator(email.value);
         const passwordError = passwordValidator(password.value);
-        if (emailError || passwordError) {
+
+        if (emailError || passwordError || fNameError || lNameError) {
+            setFname({...fname, error: fNameError});
+            setLname({...lname, error: lNameError});
             setEmail({...email, error: emailError});
             setPassword({...password, error: passwordError});
             return;
         }
-        authContext.logIn(email.value, password.value)
+
+        await LoginService.register(fname.value, lname.value, email.value, password.value);
+
+        authContext.logIn(email.value, password.value);
     };
 
-
-    // @ts-ignore
     return (
-
         <Background>
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-                <Logo/>
-                <Header>Let's get started!</Header>
-                <TextInput
-                    label="Email"
-                    returnKeyType="next"
-                    value={email.value}
-                    onChangeText={(text: string) => setEmail({value: text, error: ""})}
-                    error={!!email.error}
-                    errorText={email.error}
-                    autoCapitalize="none"
-                    autoCompleteType="email"
-                    textContentType="emailAddress"
-                    keyboardType="email-address"
-                    description="Email"
-                />
-                <TextInput
-                    label="First Name"
-                    returnKeyType="next"
-                    value={email.value}
-                    onChangeText={(text: string) => setEmail({value: text, error: ""})}
-                    error={!!email.error}
-                    errorText={email.error}
-                    autoCapitalize="none"
-                    autoCompleteType="email"
-                    textContentType="emailAddress"
-                    keyboardType="email-address"
-                    description="Email"
-                />
-                <TextInput
-                    label="Last Name"
-                    returnKeyType="next"
-                    value={email.value}
-                    onChangeText={(text: string) => setEmail({value: text, error: ""})}
-                    error={!!email.error}
-                    errorText={email.error}
-                    autoCapitalize="none"
-                    autoCompleteType="email"
-                    textContentType="emailAddress"
-                    keyboardType="email-address"
-                    description="Email"
-                />
-                <TextInput
-                    label="Password"
-                    returnKeyType="done"
-                    value={password.value}
-                    onChangeText={(text: string) => setPassword({value: text, error: ""})}
-                    error={!!password.error}
-                    errorText={password.error}
-                    secureTextEntry
-                    description="Password"
-                />
-                <TextInput
-                    label="Re-Enter Password"
-                    returnKeyType="done"
-                    value={password.value}
-                    onChangeText={(text: string) => setPassword({value: text, error: ""})}
-                    error={!!password.error}
-                    errorText={password.error}
-                    secureTextEntry
-                    description="Password"
-                />
 
-                <TextInput
-                    label="Phone"
-                    returnKeyType="done"
-                    value={password.value}
-                    onChangeText={(text: string) => setPassword({value: text, error: ""})}
-                    error={!!password.error}
-                    errorText={password.error}
-                    secureTextEntry
-                    description="Password"
-                />
+            <Logo/>
 
-                <GeneralButton mode="contained" onPressFunction={onRegisterPressed} text={"Register"} style=""/>
+            <Header>Adventure begins here!</Header>
 
-                <View style={styles.row}>
-                    <Text>Already have an account ?</Text>
-                </View>
-                <View style={styles.row}>
-                    <TouchableOpacity
-                        onPress={() => router.replace("/login")}
-                    >
-                        <Text style={styles.link}>Log In !</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+            <TextInput
+                label="First Name"
+                returnKeyType="next"
+                value={fname.value}
+                onChangeText={text => setFname({value: text, error: ''})}
+                error={!!fname.error}
+                errorText={fname.error}
+            />
+
+            <TextInput
+                label="Last Name"
+                returnKeyType="next"
+                value={lname.value}
+                onChangeText={text => setLname({value: text, error: ''})}
+                error={!!lname.error}
+                errorText={lname.error}
+            />
+
+            <TextInput
+                label="Email"
+                returnKeyType="next"
+                value={email.value}
+                onChangeText={text => setEmail({value: text, error: ''})}
+                error={!!email.error}
+                errorText={email.error}
+                autoCapitalize="none"
+                textContentType="emailAddress"
+                keyboardType="email-address"
+            />
+
+            <TextInput
+                label="Password"
+                returnKeyType="done"
+                value={password.value}
+                onChangeText={text => setPassword({value: text, error: ''})}
+                error={!!password.error}
+                errorText={password.error}
+                secureTextEntry
+            />
+
+            <Button mode="contained" onPress={_onSignUpPressed} style={styles.button}>
+                Sign Up
+            </Button>
+
+            <View style={styles.row}>
+                <Text style={styles.label}>Already have an account? </Text>
+                <TouchableOpacity onPress={() => router.replace("/login")}>
+                    <Text>Login</Text>
+                </TouchableOpacity>
+            </View>
         </Background>
-
-
-
-        // <View className="flex-1 justify-center p-4">
-        //     <AppText size="heading" center>
-        //         Login Screen
-        //     </AppText>
-        //     <Button title="Log in!" onPress={authContext.logIn}/>
-        // </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    forgotPassword: {
-        width: "100%",
-        alignItems: "flex-end",
-        marginBottom: 10,
-    },
-    row: {
-        flexDirection: "row",
-        marginTop: 4,
-    },
-    forgot: {
-        fontSize: 13,
+    label: {
         color: theme.colors.secondary,
     },
+    button: {
+        marginTop: 24,
+    },
+    row: {
+        flexDirection: 'row',
+        marginTop: 4,
+    },
     link: {
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: theme.colors.primary,
     },
-    container: {
-        marginBottom: 140
-    }
 });
+
+export default memo(RegisterScreen);

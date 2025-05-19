@@ -6,9 +6,9 @@ import {useContext} from "react";
 import {AuthContext} from "@/utils/authContext";
 
 export default function IndexScreen() {
+    const authState = useContext(AuthContext);
     const router = useRouter();
     const canGoBack = router.canGoBack();
-    const authState = useContext(AuthContext);
 
     return (
         <View className="justify-center flex-1 p-4 ">

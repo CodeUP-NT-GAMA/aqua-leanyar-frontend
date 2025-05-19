@@ -5,6 +5,7 @@ import {theme} from "@/theme/theme";
 import {Button as PaperButton} from "react-native-paper";
 
 
+// @ts-ignore
 export default function Button({mode, style, text, onPressFunction}) {
     // @ts-ignore
     return (

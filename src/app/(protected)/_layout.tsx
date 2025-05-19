@@ -92,6 +92,20 @@ export default function RootLayout() {
                         ),
                     }}
                 />
+                <Tabs.Screen
+                    name="(shop)"
+                    options={{
+                        title: "Shop",
+                        tabBarLabel: "Shop",
+                        tabBarIcon: ({color, size}) => (
+                            <MaterialCommunityIcons
+                                name="shopping"
+                                size={size}
+                                color={color}
+                            />
+                        ),
+                    }}
+                />
             </Tabs>
         </React.Fragment>
     );

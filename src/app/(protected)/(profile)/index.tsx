@@ -4,6 +4,8 @@ import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { TextInput, Button } from 'react-native-paper';
+import CardTitle from 'react-native-paper/lib/typescript/components/Card/CardTitle';
+import { theme } from '@/theme/theme';
 
 interface User {
     firstName: string;
@@ -97,10 +99,21 @@ const ProfileScreen: React.FC = () => {
     };
 
     const handlePasswordChange = () => {
-        if (newPassword !== confirmPassword) {
-            Alert.alert('Error', 'Passwords do not match');
+        if (!oldPassword) {
+            Alert.alert('Error', 'Please enter your old password.');
             return;
         }
+
+        if (newPassword.length < 6) {
+            Alert.alert('Error', 'Password must be at least 6 characters long.');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            Alert.alert('Error', 'New passwords do not match.');
+            return;
+        }
+
         setOldPassword('');
         setNewPassword('');
         setConfirmPassword('');
@@ -115,14 +128,11 @@ const ProfileScreen: React.FC = () => {
         ]);
     };
 
- const handlePurchaseHistory = () => {
-    router.push({
+    const handlePurchaseHistory = () => {
+        router.push({
         pathname: '/(protected)/(profile)/purchase_history',
-        params: {
-            title: 'Purchase History'
-        },
-    });
-};
+               });
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -141,6 +151,16 @@ const ProfileScreen: React.FC = () => {
                     <TextInput label="First Name" value={newFirstName} onChangeText={setNewFirstName} style={styles.input} />
                     <TextInput label="Last Name" value={newLastName} onChangeText={setNewLastName} style={styles.input} />
                     <Button mode="contained" onPress={handleSaveName} style={styles.saveButton}>Save</Button>
+                </View>
+            </Modal>
+
+            <Modal visible={isPasswordModalVisible} transparent={true}>
+                <View style={styles.modalContainer}>
+                    <TextInput label="Old Password" value={oldPassword} onChangeText={setOldPassword} secureTextEntry style={styles.input} />
+                    <TextInput label="New Password" value={newPassword} onChangeText={setNewPassword} secureTextEntry style={styles.input} />
+                    <TextInput label="Confirm Password" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry style={styles.input} />
+                    <Button mode="contained" onPress={handlePasswordChange} style={styles.saveButton}>Save</Button>
+                    <Button mode="outlined" onPress={() => setPasswordModalVisible(false)} style={styles.cancelButton}>Cancel</Button>
                 </View>
             </Modal>
 
@@ -167,13 +187,13 @@ const ProfileScreen: React.FC = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9f9f9', paddingHorizontal: 20 },
+    container: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.primary, paddingHorizontal: 20 },
     profileImage: { width: 120, height: 120, borderRadius: 60, marginBottom: 20 },
     fieldContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
-    name: { fontSize: 24, fontWeight: 'bold', color: '#333', marginRight: 10 },
-    email: { fontSize: 18, color: '#666', marginRight: 10 },
-    modalContainer: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: 'rgba(255,255,255,0.9)' },
-    input: { marginBottom: 15, backgroundColor: '#ffffff' },
+    name: { fontSize: 24, fontWeight: 'bold', color: theme.colors.text, marginRight: 10 },
+    email: { fontSize: 18, color: theme.colors.text, marginRight: 10 },
+    modalContainer: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: theme.colors.secondary },
+    input: { marginBottom: 15, backgroundColor: theme.colors.secondary },
     actionButton: { backgroundColor: '#007bff', padding: 10, marginVertical: 10 },
     logoutButton: { backgroundColor: '#D9534F', padding: 10, marginVertical: 10 },
     saveButton: { marginVertical: 10 }

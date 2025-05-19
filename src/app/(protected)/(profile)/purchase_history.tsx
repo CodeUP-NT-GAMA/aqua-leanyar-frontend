@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Card, Divider, TouchableRipple, IconButton } from 'react-native-paper';
+
 
 interface Item {
     itemNumber: string;

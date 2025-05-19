@@ -8,6 +8,7 @@ import {
 import { useLocalSearchParams } from 'expo-router';
 import AddButton from '@/components/AddButton';
 import { theme } from '@/theme/theme';
+import BackButton from '@/components/BackButton';
 
 type ProductParams = {
   name?: string;
@@ -45,6 +46,7 @@ export default function ProductNestedScreen() {
 
   const renderContent = () => (
     <View className="p-4">
+      <BackButton/>
       <Image source={{ uri: image }} className="w-full h-80 mb-4" resizeMode="cover" />
       <Text className="text-2xl font-bold text-black mb-2">{name}</Text>
       <Text className="text-xl text-red-600 font-semibold mb-4">{price}</Text>

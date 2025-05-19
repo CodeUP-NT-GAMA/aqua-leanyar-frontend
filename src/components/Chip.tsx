@@ -5,17 +5,18 @@ import { Chip } from 'react-native-paper';
 type Props = {
   text: string;
   onPress: () => void;
+  icon: string;
 };
 
-const FilterChip = ({ text, onPress }: Props) => (
+const FilterChip = ({ text, onPress, icon }: Props) => (
   <Chip
-    icon="information"
+    icon={icon}
     onPress={onPress}
     style={{
       backgroundColor: '#FBF8EF',
       borderWidth: 1,
       borderColor: theme.colors.secondary,
-      marginVertical: 5,
+      marginVertical: 20,
       marginHorizontal: 5,
       width: 125,
       height: 40,

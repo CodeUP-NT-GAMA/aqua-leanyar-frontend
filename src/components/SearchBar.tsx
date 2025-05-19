@@ -17,7 +17,6 @@ const MyComponent = () => {
         borderRadius: 8,
         marginTop: 10,
         marginBottom: 10,
-        padding: 10,
       }}
       />
   );

@@ -1,9 +1,10 @@
 import "../../../global.css";
-import {StatusBar} from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import {AuthContext} from "@/utils/authContext";
-import {Redirect, Tabs} from "expo-router";
+import { AuthContext } from "@/utils/authContext";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 
 export const unstable_settings = {
@@ -20,93 +21,96 @@ export default function RootLayout() {
 
     if (!authState.isLoggedIn) {
         // @ts-ignore
-        return <Redirect href="/login"/>;
+        return <Redirect href="/login" />;
     }
 
     return (
-        <React.Fragment>
-            <StatusBar style="auto"/>
-            <Tabs
-                screenOptions={{tabBarActiveTintColor: "teal"}}
-                backBehavior="order"
-            >
-                <Tabs.Screen
-                    name="(home)"
-                    options={{
-                        title: "Home",
-                        headerShown: false,
-                        tabBarLabel: "Home",
-                        tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons
-                                name="water-polo"
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tabs.Screen
-                    name="second"
-                    options={{
-                        title: "Activities",
-                        tabBarLabel: "Activities",
-                        headerShown: false,
-                        popToTopOnBlur: true,
-                        tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons
-                                name="ski-water"
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tabs.Screen
-                    name="third"
-                    options={{
-                        title: "Cart",
-                        tabBarBadge: 2,
-                        tabBarBadgeStyle: {
-                            backgroundColor: "tomato",
-                            color: "white",
-                        },
-                        tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons
-                                name="cart-heart"
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tabs.Screen
-                    name="(profile)"
-                    options={{
-                        title: "Profile",
-                        tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons
-                                name="emoticon-happy-outline"
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tabs.Screen
-                    name="(shop)"
-                    options={{
-                        title: "Shop",
-                        tabBarLabel: "Shop",
-                        tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons
-                                name="shopping"
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-            </Tabs>
-        </React.Fragment>
+        <SafeAreaProvider>
+            <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+                <StatusBar style="auto" />
+                <Tabs
+                    screenOptions={{ tabBarActiveTintColor: "teal" }}
+                    backBehavior="order"
+                >
+                    <Tabs.Screen
+                        name="(home)"
+                        options={{
+                            title: "Home",
+                            headerShown: false,
+                            tabBarLabel: "Home",
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons
+                                    name="water-polo"
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="second"
+                        options={{
+                            title: "Activities",
+                            tabBarLabel: "Activities",
+                            headerShown: false,
+                            popToTopOnBlur: true,
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons
+                                    name="ski-water"
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="third"
+                        options={{
+                            title: "Cart",
+                            tabBarBadge: 2,
+                            tabBarBadgeStyle: {
+                                backgroundColor: "tomato",
+                                color: "white",
+                            },
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons
+                                    name="cart-heart"
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="(profile)"
+                        options={{
+                            title: "Profile",
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons
+                                    name="emoticon-happy-outline"
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="(shop)"
+                        options={{
+                            title: "Shop",
+                            tabBarLabel: "Shop",
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons
+                                    name="shopping"
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                            headerShown: false,
+                        }}
+                    />
+                </Tabs>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 }

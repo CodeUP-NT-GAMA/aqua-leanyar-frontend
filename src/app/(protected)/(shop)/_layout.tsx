@@ -8,7 +8,7 @@ export default function Layout() {
             }}
         >
             <Stack.Screen name="index" options={{title: "Shop", headerShown:false}}/>
-            <Stack.Screen name="product-nested" options={{title: "Shop Nested"}}/>
+            <Stack.Screen name="product-nested" options={{title: "Shop Nested", headerShown : false} } />
             <Stack.Screen
                 name="also-nested"
                 options={{title: "Shop Also Nested"}}

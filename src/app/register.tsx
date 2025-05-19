@@ -37,7 +37,7 @@ export default function LoginScreen() {
         <Background>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
                 <Logo/>
-                <Header>Let's get started!</Header>
+                <Header>Let&apos;s get started!</Header>
                 <TextInput
                     label="Email"
                     returnKeyType="next"

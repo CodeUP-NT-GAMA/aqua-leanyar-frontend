@@ -1,11 +1,18 @@
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import { Image, Text, View } from "react-native";
 import AddButton from "./AddButton";
 import { theme } from "@/theme/theme";
+import { useState } from "react";
 
 export default function ProductCard({ item }) {
+  const [imageError, setImageError] = useState(false);
   return (
     <View className="bg-white rounded-lg overflow-hidden shadow-sm border border-bg-primary">
-      <Image source={{ uri: item.image }} className="w-full h-32" resizeMode="cover" />
+      <Image  source={
+          imageError
+            ? require("../../assets/fallback.png") // Local fallback image
+            : { require: "../ /../assets/nike.jpg" }
+        }
+        onError={() => setImageError(true)}alt={item.name} className="w-full h-32" resizeMode="cover" />
       <View className="p-2">
         <Text className="font-semibold text-sm">{item.name}</Text>
         <Text className="text-gray-500 text-xs">{item.price}</Text>

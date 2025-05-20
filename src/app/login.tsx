@@ -7,14 +7,15 @@ import {passwordValidator} from "@/helper/passwordValidator";
 import Background from "@/components/generic/Background";
 import Logo from "@/components/Logo";
 import TextInput from "@/components/TextInput";
-import {Text} from "react-native-paper";
-import {theme} from "@/theme/theme";
+import {Text, useTheme} from "react-native-paper";
 import Header from "@/components/Header";
 import {useRouter} from "expo-router";
 
 export default function LoginScreen() {
     const authContext = useContext(AuthContext);
     const router = useRouter();
+    const theme = useTheme();
+    const styles = makeStyles(theme);
 
     const [email, setEmail] = useState({value: "", error: ""});
     const [password, setPassword] = useState({value: "", error: ""});
@@ -91,7 +92,7 @@ export default function LoginScreen() {
     );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (theme) => StyleSheet.create({
     forgotPassword: {
         width: "100%",
         alignItems: "flex-end",

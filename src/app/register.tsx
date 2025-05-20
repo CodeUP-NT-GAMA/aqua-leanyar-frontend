@@ -1,20 +1,23 @@
 import GeneralButton from "@/components/GeneralButton";
 import {AuthContext} from "@/utils/authContext";
 import {useContext, useState} from "react";
-import {ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";
 import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
 import Background from "@/components/generic/Background";
 import Logo from "@/components/Logo";
 import TextInput from "@/components/TextInput";
-import {Text} from "react-native-paper";
-import {theme} from "@/theme/theme";
 import Header from "@/components/Header";
 import {useRouter} from "expo-router";
+import {Text, useTheme} from "react-native-paper";
+
+const {height} = Dimensions.get("window");
 
 export default function LoginScreen() {
     const authContext = useContext(AuthContext);
     const router = useRouter();
+    const theme = useTheme();
+    const styles = makeStyles(theme);
 
     const [email, setEmail] = useState({value: "", error: ""});
     const [password, setPassword] = useState({value: "", error: ""});
@@ -35,7 +38,7 @@ export default function LoginScreen() {
     return (
 
         <Background>
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
                 <Logo/>
                 <Header>Let's get started!</Header>
                 <TextInput
@@ -112,7 +115,7 @@ export default function LoginScreen() {
                 <GeneralButton mode="contained" onPressFunction={onRegisterPressed} text={"Register"} style=""/>
 
                 <View style={styles.row}>
-                    <Text>Already have an account ?</Text>
+                    <Text style={styles.account}>Already have an account ?</Text>
                 </View>
                 <View style={styles.row}>
                     <TouchableOpacity
@@ -134,8 +137,7 @@ export default function LoginScreen() {
         // </View>
     );
 }
-
-const styles = StyleSheet.create({
+const makeStyles = (theme) => StyleSheet.create({
     forgotPassword: {
         width: "100%",
         alignItems: "flex-end",
@@ -149,11 +151,20 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: theme.colors.secondary,
     },
+    account: {
+        fontSize: 16
+    },
     link: {
         fontWeight: "bold",
         color: theme.colors.primary,
+        fontSize: 18,
+        paddingBottom: 40
     },
     container: {
-        marginBottom: 140
+        flexGrow: 1,          // Ensures ScrollView can grow and center properly
+        flexDirection: "column",
+        alignItems: 'center', // Horizontally center children
+        justifyContent: 'center', // Vertically center if needed
+        paddingBottom: height * 0.1
     }
 });

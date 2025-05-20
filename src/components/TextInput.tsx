@@ -1,7 +1,8 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
 import {TextInput as Input, useTheme} from "react-native-paper";
 
+const {width} = Dimensions.get("window");
 // @ts-ignore
 export default function TextInput({errorText, description, ...props}) {
     const theme = useTheme();
@@ -27,7 +28,7 @@ export default function TextInput({errorText, description, ...props}) {
 
 const makeStyles = (theme) => StyleSheet.create({
     container: {
-        width: "100%",
+        width: width * 0.6,
         marginVertical: 10,
     },
     input: {

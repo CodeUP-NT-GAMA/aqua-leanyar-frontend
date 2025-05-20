@@ -1,10 +1,9 @@
-import {StyleSheet, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import {AppText} from "@/components/AppText";
 import {Link, useRouter} from "expo-router";
 import {Button} from "@/components/Button";
 import {useContext} from "react";
 import {AuthContext} from "@/utils/authContext";
-import {Card} from "@/components/ui/card";
 import {useTheme} from 'react-native-paper';
 import PagerView from 'react-native-pager-view';
 
@@ -18,21 +17,11 @@ export default function IndexScreen() {
     return (
         <View className="justify-center flex-1 p-4 ">
             <PagerView style={styles.pagerView} initialPage={0} collapsable={false}>
-                <View key="1">
-                    <Card size="lg" variant="elevated" className="m-3">
-                        <AppText center>
-                            Quick Start
-                        </AppText>
-                        <AppText center>Start building your next project in minutes</AppText>
-                    </Card>
+                <View key="1" style={styles.item}>
+                    <Image source={require('../../../../assets/general/generic-1.jpg')}/>
                 </View>
-                <View key="2">
-                    <Card size="lg" variant="elevated" className="m-3">
-                        <AppText center>
-                            Quick Start
-                        </AppText>
-                        <AppText center>Start building your next project in minutes</AppText>
-                    </Card>
+                <View key="2" style={styles.item}>
+                    <Image source={require('../../../../assets/general/generic-2.jpg')}/>
                 </View>
             </PagerView>
 
@@ -52,7 +41,6 @@ export default function IndexScreen() {
             <Button title="Log out!" onPress={authState.logOut} style={{backgroundColor: theme.colors.primary}}/>
         </View>
 
-
     );
 }
 
@@ -60,4 +48,8 @@ const styles = StyleSheet.create({
     pagerView: {
         flex: 1,
     },
+    item: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Alert, StyleSheet, Modal, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useRouter} from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons';
-import { TextInput, Button } from 'react-native-paper';
+import {Ionicons} from '@expo/vector-icons';
+import {Button, TextInput, useTheme} from 'react-native-paper';
+import {Button as B} from "@/components/Button";
+import {AuthContext} from "@/utils/authContext";
 
 interface User {
     firstName: string;
@@ -21,6 +23,8 @@ const initialUser: User = {
 };
 
 const ProfileScreen: React.FC = () => {
+    const authState = useContext(AuthContext);
+    const theme = useTheme();
     const router = useRouter();
     const [user, setUser] = useState<User>(initialUser);
     const [profileImage, setProfileImage] = useState(user.profileImage);
@@ -160,6 +164,7 @@ const ProfileScreen: React.FC = () => {
             <Button mode="contained" onPress={handlePurchaseHistory} style={styles.actionButton}>Purchase History</Button>
             <Button mode="contained" onPress={() => setPasswordModalVisible(true)} style={styles.actionButton}>Change Password</Button>
             <Button mode="contained" onPress={handleLogout} style={styles.logoutButton}>Log Out</Button>
+            <B title="Log out!" onPress={authState.logOut} style={{backgroundColor: theme.colors.primary}}/>
         </ScrollView>
     );
 };

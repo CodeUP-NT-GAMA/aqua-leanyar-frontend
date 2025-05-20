@@ -1,11 +1,13 @@
 import React from "react";
 import {StyleSheet, Text, View} from "react-native";
-import {TextInput as Input} from "react-native-paper";
-
-import {theme} from "@/theme/theme";
+import {TextInput as Input, useTheme} from "react-native-paper";
 
 // @ts-ignore
 export default function TextInput({errorText, description, ...props}) {
+    const theme = useTheme();
+
+    // Create styles using the current theme
+    const styles = makeStyles(theme);
     return (
         <View style={styles.container}>
             <Input
@@ -23,21 +25,22 @@ export default function TextInput({errorText, description, ...props}) {
     );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (theme) => StyleSheet.create({
     container: {
         width: "100%",
         marginVertical: 10,
     },
     input: {
+        fontSize: 16,
         backgroundColor: theme.colors.surface,
     },
     description: {
-        fontSize: 13,
+        fontSize: 16,
         color: theme.colors.secondary,
         paddingTop: 8,
     },
     error: {
-        fontSize: 13,
+        fontSize: 16,
         color: theme.colors.error,
         paddingTop: 8,
     },

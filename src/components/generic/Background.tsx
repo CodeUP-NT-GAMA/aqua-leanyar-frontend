@@ -1,5 +1,5 @@
 import React from "react";
-import {ImageBackground, KeyboardAvoidingView, StyleSheet,} from "react-native";
+import {ImageBackground, KeyboardAvoidingView, Platform, StyleSheet} from "react-native";
 
 import {theme} from "@/theme/theme";
 
@@ -7,9 +7,9 @@ import {theme} from "@/theme/theme";
 export default function Background({children}) {
     return (
         <ImageBackground
-            source={require("../../assets/landing.png")}
-
-
+            source={Platform.OS === 'web' ? require("@assets/general/background/Background-web.png") :
+                require("@assets/general/background/Background-native.png")}
+            imageStyle={{opacity: 0.3}}
             style={styles.background}
         >
             <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         width: "100%",
+        opacity: 80,
         backgroundColor: theme.colors.surface,
     },
     container: {

@@ -4,7 +4,7 @@ import {useContext, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
-import Background from "@/components/Background";
+import Background from "@/components/generic/Background";
 import Logo from "@/components/Logo";
 import TextInput from "@/components/TextInput";
 import {Text} from "react-native-paper";
@@ -67,10 +67,10 @@ export default function LoginScreen() {
                     <Text style={styles.forgot}>Forgot your password ?</Text>
                 </TouchableOpacity>
             </View>
-            <GeneralButton mode="contained" onPressFunction={onLoginPressed} text={"Login"} style=""/>
+            <GeneralButton mode="contained" onPressFunction={onLoginPressed} text={"Login"} style={styles.login}/>
 
             <View style={styles.row}>
-                <Text>You do not have an account yet ?</Text>
+                <Text style={styles.account}>You do not have an account yet ?</Text>
             </View>
             <View style={styles.row}>
                 <TouchableOpacity
@@ -102,11 +102,19 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     forgot: {
-        fontSize: 13,
+        fontSize: 16,
         color: theme.colors.secondary,
     },
     link: {
         fontWeight: "bold",
         color: theme.colors.primary,
+        paddingTop: 10,
+        fontSize: 18
+    },
+    account: {
+        fontSize: 16
+    },
+    login: {
+        fontSize: 18
     },
 });

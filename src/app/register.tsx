@@ -4,7 +4,7 @@ import {useContext, useState} from "react";
 import {ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";
 import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
-import Background from "@/components/Background";
+import Background from "@/components/generic/Background";
 import Logo from "@/components/Logo";
 import TextInput from "@/components/TextInput";
 import {Text} from "react-native-paper";

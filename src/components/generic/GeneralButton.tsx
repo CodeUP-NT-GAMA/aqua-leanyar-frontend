@@ -3,7 +3,7 @@ import {StyleSheet} from "react-native";
 import {Button as PaperButton, useTheme} from 'react-native-paper';
 
 
-export default function Button({mode, style, text, onPressFunction}) {
+export default function Button({mode, style, text, onPressFunction, ...props}) {
     const theme = useTheme();
     // @ts-ignore
     return (
@@ -16,6 +16,7 @@ export default function Button({mode, style, text, onPressFunction}) {
             labelStyle={styles.text}
             mode={mode}
             onPress={onPressFunction}
+            {...props}
         >
             {text}
         </PaperButton>

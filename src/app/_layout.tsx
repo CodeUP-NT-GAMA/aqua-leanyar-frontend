@@ -52,7 +52,7 @@ export default function RootLayout() {
     }
 
     const customFont = {
-        fontFamily: 'AutourOne-Regular', // Replace with your desired fonts family
+        fontFamily: 'Inter-Black', // Replace with your desired fonts family
         fontWeight: 'normal',
     };
 

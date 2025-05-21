@@ -13,14 +13,14 @@ import {useRouter} from "expo-router";
 import {Text, useTheme} from "react-native-paper";
 import {LoginService} from "@/service/LoginService";
 
-const {height} = Dimensions.get("window");
+const {height, width} = Dimensions.get("window");
 
 export default function LoginScreen() {
     const authContext = useContext(AuthContext);
     const router = useRouter();
     const theme = useTheme();
     const styles = makeStyles(theme);
-
+    const [isloading, setLoading] = useState(false);
     const [firstName, setFirstName] = useState({value: "", error: ""});
     const [lastName, setLastName] = useState({value: "", error: ""});
     const [email, setEmail] = useState({value: "", error: ""});
@@ -30,6 +30,7 @@ export default function LoginScreen() {
 
     const onRegisterPressed = () => {
         const emailError = emailValidator(email.value);
+
         const passwordError = passwordValidator(password.value);
         const firstNameError = requiredValidator(firstName.value)
         const lastNameError = requiredValidator(lastName.value);
@@ -41,11 +42,14 @@ export default function LoginScreen() {
             setLastName({...lastName, error: lastNameError});
             return;
         }
+        setLoading(true);
         LoginService.register(email.value, firstName.value, lastName.value, password.value, phone.value)
             .catch((err: Error) => {
+                setLoading(false);
                 console.log("Error calling Login API", err);
             })
             .then(async res => {
+                setLoading(false);
                 if (res != undefined && res.status === 201) {
                     router.replace({
                         pathname: '/login',
@@ -63,7 +67,8 @@ export default function LoginScreen() {
     return (
 
         <Background>
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
+            <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
+                        contentContainerStyle={styles.container}>
                 <Logo/>
                 <Header>Let's get started!</Header>
                 <TextInput
@@ -137,7 +142,9 @@ export default function LoginScreen() {
                     description="Phone number"
                 />
 
-                <GeneralButton mode="contained" onPressFunction={onRegisterPressed} text={"Register"} style=""/>
+                <GeneralButton mode="contained" onPressFunction={onRegisterPressed} text={"Register"} style=""
+                               disabled={isloading}
+                               icon="refresh" loading={isloading}/>
 
                 <View style={styles.row}>
                     <Text style={styles.account}>Already have an account ?</Text>
@@ -169,11 +176,11 @@ const makeStyles = (theme) => StyleSheet.create({
     },
     account: {
         fontSize: 16,
-        fontFamily: 'AutourOne-Regular',
+        fontFamily: 'Inter-Black'
     },
     link: {
         fontWeight: "bold",
-        fontFamily: 'AutourOne-Regular',
+        fontFamily: 'Inter-Black',
         color: theme.colors.primary,
         fontSize: 18,
         paddingBottom: 40
@@ -183,6 +190,7 @@ const makeStyles = (theme) => StyleSheet.create({
         flexDirection: "column",
         alignItems: 'center', // Horizontally center children
         justifyContent: 'center', // Vertically center if needed
-        paddingBottom: height * 0.1
+        paddingBottom: height * 0.1,
+        width: "100%"
     }
 });

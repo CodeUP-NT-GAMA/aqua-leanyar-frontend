@@ -15,6 +15,6 @@ const makeStyles = (theme) => StyleSheet.create({
         color: theme.colors.primary,
         fontWeight: "bold",
         paddingVertical: 12,
-        fontFamily: 'AutourOne-Regular',
+        fontFamily: 'Inter-Black'
     },
 });

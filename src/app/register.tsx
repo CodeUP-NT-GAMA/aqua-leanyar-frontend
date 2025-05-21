@@ -152,10 +152,12 @@ const makeStyles = (theme) => StyleSheet.create({
         color: theme.colors.secondary,
     },
     account: {
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'AutourOne-Regular',
     },
     link: {
         fontWeight: "bold",
+        fontFamily: 'AutourOne-Regular',
         color: theme.colors.primary,
         fontSize: 18,
         paddingBottom: 40

@@ -49,7 +49,8 @@
           "merchantIdentifier": "",
           "publishableKey": "pk_test_51ROxpMCf4oaVDzHl263FbrmjLlWmz0qClB0X7QeijtmBMKwFwdLzFDfjZtlJGYJjlpGBq6jnerU3KHGppwhyys0U00AsBonRMy"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

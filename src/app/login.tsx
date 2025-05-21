@@ -108,12 +108,14 @@ const makeStyles = (theme) => StyleSheet.create({
     },
     link: {
         fontWeight: "bold",
+        fontFamily: 'AutourOne-Regular',
         color: theme.colors.primary,
         paddingTop: 10,
         fontSize: 18
     },
     account: {
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'AutourOne-Regular',
     },
     login: {
         fontSize: 18

@@ -2,7 +2,7 @@ import {Stack} from "expo-router";
 
 import {GluestackUIProvider} from "@/components/ui/gluestack-ui-provider";
 import "../../global.css";
-import React from "react";
+import React, {useEffect} from "react";
 import {StatusBar} from "expo-status-bar";
 import {AuthProvider} from "@/utils/authContext";
 
@@ -17,6 +17,8 @@ import {
 } from "@react-navigation/native";
 
 import merge from "deepmerge";
+import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 const customDarkTheme = {...MD3DarkTheme, colors: Colors.dark};
 const customLightTheme = {...MD3LightTheme, colors: Colors.light};
@@ -29,19 +31,57 @@ const {LightTheme, DarkTheme} = adaptNavigationTheme({
 const CombinedLightTheme = merge(LightTheme, customLightTheme);
 const CombinedDarkTheme = merge(DarkTheme, customDarkTheme);
 
-export default function RootLayout() {
+SplashScreen.preventAutoHideAsync();
 
+export default function RootLayout() {
     const colorScheme = useColorScheme();
     const {theme} = useMaterial3Theme();
+
+    const [loaded, error] = useFonts({
+        'Inter-Black': require('../../assets/font/AutourOne-Regular.ttf'),
+    });
+
+    useEffect(() => {
+        if (loaded || error) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded, error]);
+
+    if (!loaded && !error) {
+        return null;
+    }
+
+    const customFont = {
+        fontFamily: 'AutourOne-Regular', // Replace with your desired font family
+        fontWeight: 'normal',
+    };
 
     const paperTheme =
         colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
 
+    const customizedFontTheme = {
+        ...paperTheme,
+        fonts: {
+            regular: customFont,
+            medium: customFont,
+            light: customFont,
+            thin: customFont,
+            bodySmall: customFont,
+            bodyMedium: customFont,
+            bodyLarge: customFont,
+            labelLarge: customFont,
+            labelMedium: customFont,
+            labelSmall: customFont,
+            heavy: customFont,
+            heeader: customFont,
+        }
+    };
+
     return (
         <GluestackUIProvider mode="system">
-            <PaperProvider theme={paperTheme}>
+            <PaperProvider theme={customizedFontTheme}>
                 <AuthProvider>
-                    <ThemeProvider value={paperTheme}>
+                    <ThemeProvider value={customizedFontTheme}>
                         <StatusBar style="auto"/>
                         <Stack>
                             <Stack.Screen

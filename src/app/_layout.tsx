@@ -5,7 +5,7 @@ import "../../global.css";
 import React, {useEffect} from "react";
 import {StatusBar} from "expo-status-bar";
 import {AuthProvider} from "@/utils/authContext";
-
+import AwesomeIcon from '@react-native-vector-icons/fontawesome';
 import {useMaterial3Theme} from '@pchmn/expo-material3-theme';
 import {useColorScheme} from 'react-native';
 import {adaptNavigationTheme, MD3DarkTheme, MD3LightTheme, PaperProvider} from 'react-native-paper';
@@ -72,6 +72,7 @@ export default function RootLayout() {
             labelLarge: customFont,
             labelMedium: customFont,
             labelSmall: customFont,
+            headlineSmall: customFont,
             heavy: customFont,
             heeader: customFont,
         }
@@ -80,7 +81,10 @@ export default function RootLayout() {
     // @ts-ignore
     return (
         <GluestackUIProvider mode="system">
-            <PaperProvider theme={customizedFontTheme}>
+            <PaperProvider settings={{
+                icon: (props) => <AwesomeIcon {...props} />
+            }}
+                           theme={customizedFontTheme}>
                 <AuthProvider>
                     <ThemeProvider value={customizedFontTheme}>
                         <StatusBar style="auto"/>

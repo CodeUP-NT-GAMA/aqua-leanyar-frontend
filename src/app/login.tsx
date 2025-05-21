@@ -6,12 +6,15 @@ import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
 import Background from "@/components/generic/Background";
 import Logo from "@/components/Logo";
-import TextInput from "@/components/TextInput";
-import {Text, useTheme} from "react-native-paper";
+import TextInput from "@/components/generic/TextInput";
+import {Dialog, Portal, Text, useTheme} from "react-native-paper";
 import Header from "@/components/Header";
-import {useRouter} from "expo-router";
+import {useLocalSearchParams, useRouter} from "expo-router";
 
 export default function LoginScreen() {
+    const {greet} = useLocalSearchParams();
+    const [visible, setVisible] = useState(greet === "Y");
+    const hideDialog = () => setVisible(false);
     const authContext = useContext(AuthContext);
     const router = useRouter();
     const theme = useTheme();
@@ -36,6 +39,16 @@ export default function LoginScreen() {
     return (
 
         <Background>
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Icon icon="check" size={40} color={"green"}/>
+                    <Dialog.Title style={styles.dialog}>Ready, set, GO!</Dialog.Title>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium" style={styles.dialog_text}>Let's log in with your new
+                            credentials!</Text>
+                    </Dialog.Content>
+                </Dialog>
+            </Portal>
             <Logo/>
             <Header>Welcome Back!</Header>
             <TextInput
@@ -120,4 +133,13 @@ const makeStyles = (theme) => StyleSheet.create({
     login: {
         fontSize: 18
     },
+    dialog: {
+        textAlign: 'center',
+        fontSize: 25,
+    },
+    dialog_text: {
+        textAlign: 'center',
+        fontSize: 18,
+    }
+
 });

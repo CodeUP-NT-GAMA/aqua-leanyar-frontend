@@ -9,8 +9,10 @@ export default function Layout() {
                 animation: pathname.startsWith("/second") ? "default" : "none",
             }}
         >
-            <Stack.Screen name="index" options={{title: "Activities"}}/>
-            <Stack.Screen name="nested" options={{title: "Second Nested"}}/>
+            <Stack.Screen name="index"
+                          options={{title: "Activities", headerTitleStyle: {fontFamily: "AutourOne-Regular"}}}/>
+            <Stack.Screen name="nested"
+                          options={{title: "Second Nested", headerTitleStyle: {fontFamily: "AutourOne-Regular"}}}/>
             <Stack.Screen
                 name="also-nested"
                 options={{title: "Second Also Nested"}}

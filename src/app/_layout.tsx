@@ -38,7 +38,7 @@ export default function RootLayout() {
     const {theme} = useMaterial3Theme();
 
     const [loaded, error] = useFonts({
-        'Inter-Black': require('../../assets/font/AutourOne-Regular.ttf'),
+        'Inter-Black': require('@assets/fonts/AutourOne-Regular.ttf'),
     });
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export default function RootLayout() {
     }
 
     const customFont = {
-        fontFamily: 'AutourOne-Regular', // Replace with your desired font family
+        fontFamily: 'AutourOne-Regular', // Replace with your desired fonts family
         fontWeight: 'normal',
     };
 
@@ -77,6 +77,7 @@ export default function RootLayout() {
         }
     };
 
+    // @ts-ignore
     return (
         <GluestackUIProvider mode="system">
             <PaperProvider theme={customizedFontTheme}>
@@ -90,6 +91,7 @@ export default function RootLayout() {
                                     headerShown: false,
                                     animation: "none",
                                 }}
+
                             />
                             <Stack.Screen
                                 name="login"

@@ -66,6 +66,7 @@ export default function RootLayout() {
                     options={{
                         title: "Cart",
                         tabBarBadge: 2,
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
                         tabBarBadgeStyle: {
                             backgroundColor: "tomato",
                             color: "white",
@@ -83,6 +84,7 @@ export default function RootLayout() {
                     name="(profile)"
                     options={{
                         title: "Profile",
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
                         tabBarIcon: ({color, size}) => (
                             <MaterialCommunityIcons
                                 name="emoticon-happy-outline"
@@ -97,6 +99,7 @@ export default function RootLayout() {
                     options={{
                         title: "Shop",
                         tabBarLabel: "Shop",
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
                         tabBarIcon: ({color, size}) => (
                             <MaterialCommunityIcons
                                 name="shopping"

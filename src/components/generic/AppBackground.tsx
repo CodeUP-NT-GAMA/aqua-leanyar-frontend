@@ -1,9 +1,9 @@
 import React from "react";
-import {ImageBackground, KeyboardAvoidingView, Platform, StyleSheet, useColorScheme} from "react-native";
+import {ImageBackground, Platform, StyleSheet, useColorScheme, View} from "react-native";
 import {useTheme} from "react-native-paper";
 
 // @ts-ignore
-export default function Background({children}) {
+export default function AppBackground({children}) {
     const theme = useTheme();
     const styles = makeStyles(theme);
     const colorScheme = useColorScheme();
@@ -16,9 +16,9 @@ export default function Background({children}) {
                 imageStyle={{opacity: 0.9}}
                 style={styles.background}
             >
-                <KeyboardAvoidingView style={styles.container} behavior="height">
+                <View style={styles.container}>
                     {children}
-                </KeyboardAvoidingView>
+                </View>
             </ImageBackground>
         );
     } else {
@@ -26,12 +26,12 @@ export default function Background({children}) {
             <ImageBackground
                 source={Platform.OS === 'web' ? require("@assets/general/background/Background-web.png") :
                     require("@assets/general/background/Background-native.png")}
-                imageStyle={{opacity: 0.3}}
+                imageStyle={{opacity: 0.5}}
                 style={styles.background}
             >
-                <KeyboardAvoidingView style={styles.container} behavior="padding">
+                <View style={styles.container}>
                     {children}
-                </KeyboardAvoidingView>
+                </View>
             </ImageBackground>
         );
     }
@@ -42,18 +42,13 @@ export default function Background({children}) {
 const makeStyles = (theme) => StyleSheet.create({
     background: {
         flex: 1,
-        width: "100%",
-        opacity: 80,
-        backgroundColor: theme.colors.surface,
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     container: {
-        flex: 1,
-        padding: 20,
-        width: "100%",
-        maxWidth: 340,
-        alignSelf: "center",
-        alignItems: "center",
-        justifyContent: "center",
+        width: '100%',
+        height: '100%',
     },
     image: {
         flex: 1,

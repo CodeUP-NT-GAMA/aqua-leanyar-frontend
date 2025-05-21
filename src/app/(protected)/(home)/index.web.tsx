@@ -6,6 +6,7 @@ import {useContext} from "react";
 import {AuthContext} from "@/utils/authContext";
 import {Card} from "@/components/ui/card";
 import {useTheme} from 'react-native-paper';
+import AppBackground from "@/components/generic/AppBackground";
 
 
 export default function IndexScreen() {
@@ -15,29 +16,31 @@ export default function IndexScreen() {
     const theme = useTheme();
 
     return (
-        <View className="justify-center flex-1 p-4 ">
-            <Card size="lg" variant="elevated" className="m-3">
-                <AppText center>
-                    Quick Start
-                </AppText>
-                <AppText center>Start building your next project in minutes</AppText>
-            </Card>
+        <AppBackground>
+            <View className="justify-center flex-1 p-4 ">
+                <Card size="lg" variant="elevated" className="m-3">
+                    <AppText center>
+                        Quick Start
+                    </AppText>
+                    <AppText center>Start building your next project in minutes</AppText>
+                </Card>
 
-            <AppText center>Index` Screen</AppText>
-            <Link href="/home-nested" push asChild>
-                <Button title="Push to /home-nested"/>
-            </Link>
-            {canGoBack ? (
-                <Button
-                    title="Back"
-                    theme="primary"
-                    onPress={() => {
-                        router.back();
-                    }}
-                />
-            ) : null}
-            <Button title="Log out!" onPress={authState.logOut} style={{backgroundColor: theme.colors.primary}}/>
-        </View>
+                <AppText center>Index` Screen</AppText>
+                <Link href="/home-nested" push asChild>
+                    <Button title="Push to /home-nested"/>
+                </Link>
+                {canGoBack ? (
+                    <Button
+                        title="Back"
+                        theme="primary"
+                        onPress={() => {
+                            router.back();
+                        }}
+                    />
+                ) : null}
+                <Button title="Log out!" onPress={authState.logOut} style={{backgroundColor: theme.colors.primary}}/>
+            </View>
+        </AppBackground>
 
 
     );

@@ -1,4 +1,4 @@
-import GeneralButton from "@/components/GeneralButton";
+import GeneralButton from "@/components/generic/GeneralButton";
 import {AuthContext} from "@/utils/authContext";
 import {useContext, useState} from "react";
 import {Dimensions, ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";

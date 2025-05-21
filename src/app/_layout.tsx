@@ -72,6 +72,7 @@ export default function RootLayout() {
             labelLarge: customFont,
             labelMedium: customFont,
             labelSmall: customFont,
+            titleLarge: customFont,
             headlineSmall: customFont,
             heavy: customFont,
             heeader: customFont,

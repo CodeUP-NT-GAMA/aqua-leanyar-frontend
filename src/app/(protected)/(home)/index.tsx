@@ -1,15 +1,17 @@
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {Link, useRouter} from "expo-router";
 import {useContext, useRef, useState} from "react";
 import {AuthContext} from "@/utils/authContext";
-import {useTheme} from 'react-native-paper';
+import {Avatar, Button, Card, Text, useTheme} from 'react-native-paper';
 import AppBackground from "@/components/generic/AppBackground";
 import GeneralButton from "@/components/generic/GeneralButton";
 import CustomSurface from "@/components/generic/CustomSurface";
 import CustomImageCarousal from "@/components/generic/CustomImageCarousal";
 import PagerView from "react-native-pager-view";
 
-const {height} = Dimensions.get("window");
+
+const {height, width} = Dimensions.get("window");
+const LeftContent = props => <Avatar.Icon {...props} icon="check"/>
 
 
 export default function IndexScreen() {
@@ -25,32 +27,69 @@ export default function IndexScreen() {
 
     return (
         <AppBackground>
-            <View className="justify-center flex-1 p-4 ">
+            <ScrollView horizontal={false} showsVerticalScrollIndicator={false} style={styles.container}
+                        contentContainerStyle={styles.container}>
+                <View style={[styles.column_style]}>
 
-                <CustomSurface elevation={5} theme={theme} mode={"elevated"} style={styles.surface}>
-                    <CustomImageCarousal initialPage={0} pages={pages} style={styles.image_slider} theme={theme}
-                                         delay={3000} pagerRef={pagerRef} page={page} setPage={setPage}/>
-                </CustomSurface>
+                    <View>
+                        <CustomSurface elevation={5} theme={theme} mode={"elevated"} style={styles.surface}>
+                            <CustomImageCarousal initialPage={0} pages={pages} style={styles.image_slider} theme={theme}
+                                                 delay={3000} pagerRef={pagerRef} page={page} setPage={setPage}/>
+                        </CustomSurface>
+                    </View>
 
-                <Link href="/home-nested" push asChild>
-                    <GeneralButton mode="contained" onPressFunction={() => {
-                        // @ts-ignore
-                        router.push("home-nested")
-                    }} text={"Push to nested"} style={{}}/>
-                </Link>
-                {canGoBack ? (
-                    <GeneralButton
-                        text={"Back"}
-                        onPressFunction={() => {
-                            router.back();
-                        }}
-                        mode="contained"
-                        style={{}}
-                    />
-                ) : null}
-                <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
-                               style={{backgroundColor: theme.colors.primary}}/>
-            </View>
+                    <View>
+                        <Card>
+                            <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent}/>
+                            <Card.Content>
+                                <Text variant="titleLarge">Card title</Text>
+                                <Text variant="bodyMedium">Card content</Text>
+                            </Card.Content>
+                            <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
+                            <Card.Actions>
+                                <Button>Cancel</Button>
+                                <Button>Ok</Button>
+                                <Button>Ok</Button>
+                            </Card.Actions>
+                        </Card>
+                    </View>
+                    <View>
+                        <Card>
+                            <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent}/>
+                            <Card.Content>
+                                <Text variant="titleLarge">Card title</Text>
+                                <Text variant="bodyMedium">Card content</Text>
+                            </Card.Content>
+                            <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
+                            <Card.Actions>
+                                <Button>Cancel</Button>
+                                <Button>Ok</Button>
+                            </Card.Actions>
+                        </Card>
+                    </View>
+
+                    <View>
+                        <Link href="/home-nested" push asChild>
+                            <GeneralButton mode="contained" onPressFunction={() => {
+                                // @ts-ignore
+                                router.push("home-nested")
+                            }} text={"Push to nested"} style={{}}/>
+                        </Link>
+                        {canGoBack ? (
+                            <GeneralButton
+                                text={"Back"}
+                                onPressFunction={() => {
+                                    router.back();
+                                }}
+                                mode="contained"
+                                style={{}}
+                            />
+                        ) : null}
+                        <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
+                                       style={{backgroundColor: theme.colors.primary}}/>
+                    </View>
+                </View>
+            </ScrollView>
         </AppBackground>
 
     );
@@ -58,10 +97,25 @@ export default function IndexScreen() {
 
 const makeStyles = (theme) => StyleSheet.create({
     surface: {
-        width: "100%",
         height: height * 0.3,
+        width: "100%",
+        borderRadius: 20
     },
     image_slider: {
         flex: 1,
+    },
+    container: {
+        flexGrow: 1,
+        flexDirection: 'column',
+        width: width,
+        alignContent: 'center',
+        paddingBottom: height * 0.05
+    },
+    column_style: {
+        flexWrap: "nowrap",
+        padding: width * 0.03,
+        alignItems: "stretch",
+        gap: 10,
+
     }
 });

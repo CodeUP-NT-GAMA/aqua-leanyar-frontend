@@ -1,10 +1,12 @@
 import React from "react";
-import {Image, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
+import {Image} from "expo-image"
 
 export default function Logo() {
     return (
         <Image
             source={require("../../assets/logo.png")}
+            cachePolicy={"disk"}
             style={styles.image}
         />
     );

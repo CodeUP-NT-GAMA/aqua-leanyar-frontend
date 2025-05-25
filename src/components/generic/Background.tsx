@@ -1,6 +1,7 @@
 import React from "react";
-import {ImageBackground, KeyboardAvoidingView, Platform, StyleSheet, useColorScheme} from "react-native";
+import {KeyboardAvoidingView, Platform, StyleSheet, useColorScheme} from "react-native";
 import {useTheme} from "react-native-paper";
+import {ImageBackground} from "expo-image";
 
 // @ts-ignore
 export default function Background({children}) {

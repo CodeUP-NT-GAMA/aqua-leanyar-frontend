@@ -1,6 +1,7 @@
 import React from "react";
-import {ImageBackground, Platform, StyleSheet, useColorScheme, View} from "react-native";
+import {Platform, StyleSheet, useColorScheme, View} from "react-native";
 import {useTheme} from "react-native-paper";
+import {ImageBackground} from "expo-image";
 
 // @ts-ignore
 export default function AppBackground({children}) {

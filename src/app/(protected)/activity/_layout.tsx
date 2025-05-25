@@ -6,7 +6,7 @@ export default function Layout() {
     return (
         <Stack
             screenOptions={{
-                animation: pathname.startsWith("/second") ? "default" : "none",
+                animation: pathname.startsWith("/activity") ? "default" : "none",
             }}
         >
             <Stack.Screen name="index"

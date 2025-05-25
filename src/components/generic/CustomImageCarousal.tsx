@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {useEffect} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import PagerView from "react-native-pager-view";
+import {Image} from "expo-image";
 
 
 export default function CustomImageCarousal({
@@ -41,7 +42,10 @@ export default function CustomImageCarousal({
                 <View key={'id-' + idx}>
                     <Image source={{
                         uri: title
-                    }} style={styles.image}/>
+                    }}
+                           style={styles.image}
+                           cachePolicy={"disk"}
+                    />
                 </View>
             ))}
         </PagerView>

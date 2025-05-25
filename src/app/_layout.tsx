@@ -19,6 +19,7 @@ import {
 import merge from "deepmerge";
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import {BadgeProvider} from "@/components/generic/CartContext";
 
 const customDarkTheme = {...MD3DarkTheme, colors: Colors.dark};
 const customLightTheme = {...MD3LightTheme, colors: Colors.light};
@@ -80,6 +81,7 @@ export default function RootLayout() {
     };
 
     // @ts-ignore
+    // @ts-ignore
     return (
         <GluestackUIProvider mode="system">
             <PaperProvider settings={{
@@ -88,31 +90,33 @@ export default function RootLayout() {
                            theme={customizedFontTheme}>
                 <AuthProvider>
                     <ThemeProvider value={customizedFontTheme}>
-                        <StatusBar style="auto"/>
-                        <Stack>
-                            <Stack.Screen
-                                name="(protected)"
-                                options={{
-                                    headerShown: false,
-                                    animation: "none",
-                                }}
+                        <BadgeProvider>
+                            <StatusBar style="auto"/>
+                            <Stack>
+                                <Stack.Screen
+                                    name="(protected)"
+                                    options={{
+                                        headerShown: false,
+                                        animation: "none",
+                                    }}
 
-                            />
-                            <Stack.Screen
-                                name="login"
-                                options={{
-                                    headerShown: false,
-                                    animation: "none",
-                                }}
-                            />
-                            <Stack.Screen
-                                name="register"
-                                options={{
-                                    headerShown: false,
-                                    animation: "none",
-                                }}
-                            />
-                        </Stack>
+                                />
+                                <Stack.Screen
+                                    name="login"
+                                    options={{
+                                        headerShown: false,
+                                        animation: "none",
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name="register"
+                                    options={{
+                                        headerShown: false,
+                                        animation: "none",
+                                    }}
+                                />
+                            </Stack>
+                        </BadgeProvider>
                     </ThemeProvider>
                 </AuthProvider>
             </PaperProvider>

@@ -9,8 +9,8 @@ export default function SecondScreen() {
     return (
         <View className="justify-center flex-1 p-4">
             <AppText center>Second Screen</AppText>
-            <Link href="/second/nested" push asChild>
-                <Button title="Push to /second/nested"/>
+            <Link href="/activity/nested" push asChild>
+                <Button title="Push to /activity/nested"/>
             </Link>
             <Button
                 title="Back"
@@ -25,10 +25,10 @@ export default function SecondScreen() {
 
 /**
  * /index
- * /second (stack)
- *   /second/index
- *   /second/nested
- *   /second/also-nested
+ * /activity (stack)
+ *   /activity/index
+ *   /activity/nested
+ *   /activity/also-nested
  * /third
  * /fourth
  */

@@ -59,7 +59,6 @@ export function AuthProvider({children}: PropsWithChildren) {
                 console.log("Error calling Login API", err);
             })
             .then(async token => {
-                console.log(token);
                 if (token != undefined) {
                     setIsLoggedIn(true);
                     await storeAuthState({isLoggedIn: true, token: token.data.token});

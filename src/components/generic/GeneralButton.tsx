@@ -1,11 +1,10 @@
 import React from "react";
 import {StyleSheet} from "react-native";
-
-import {theme} from "@/theme/theme";
-import {Button as PaperButton} from "react-native-paper";
+import {Button as PaperButton, useTheme} from 'react-native-paper';
 
 
-export default function Button({mode, style, text, onPressFunction}) {
+export default function Button({mode, style, text, onPressFunction, ...props}) {
+    const theme = useTheme();
     // @ts-ignore
     return (
         <PaperButton
@@ -17,6 +16,7 @@ export default function Button({mode, style, text, onPressFunction}) {
             labelStyle={styles.text}
             mode={mode}
             onPress={onPressFunction}
+            {...props}
         >
             {text}
         </PaperButton>
@@ -28,10 +28,11 @@ const styles = StyleSheet.create({
         width: "100%",
         marginVertical: 10,
         paddingVertical: 2,
+        fontSize: 18
     },
     text: {
         fontWeight: "bold",
-        fontSize: 15,
+        fontSize: 18,
         lineHeight: 26,
     },
 });

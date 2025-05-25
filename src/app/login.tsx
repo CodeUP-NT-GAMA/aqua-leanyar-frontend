@@ -1,20 +1,24 @@
-import GeneralButton from "@/components/GeneralButton";
+import GeneralButton from "@/components/generic/GeneralButton";
 import {AuthContext} from "@/utils/authContext";
 import {useContext, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
-import Background from "@/components/Background";
+import Background from "@/components/generic/Background";
 import Logo from "@/components/Logo";
-import TextInput from "@/components/TextInput";
-import {Text} from "react-native-paper";
-import {theme} from "@/theme/theme";
+import TextInput from "@/components/generic/TextInput";
+import {Dialog, Portal, Text, useTheme} from "react-native-paper";
 import Header from "@/components/Header";
-import {useRouter} from "expo-router";
+import {useLocalSearchParams, useRouter} from "expo-router";
 
 export default function LoginScreen() {
+    const {greet} = useLocalSearchParams();
+    const [visible, setVisible] = useState(greet === "Y");
+    const hideDialog = () => setVisible(false);
     const authContext = useContext(AuthContext);
     const router = useRouter();
+    const theme = useTheme();
+    const styles = makeStyles(theme);
 
     const [email, setEmail] = useState({value: "", error: ""});
     const [password, setPassword] = useState({value: "", error: ""});
@@ -35,6 +39,16 @@ export default function LoginScreen() {
     return (
 
         <Background>
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Icon icon="check" size={40} color={"green"}/>
+                    <Dialog.Title style={styles.dialog}>Ready, set, GO!</Dialog.Title>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium" style={styles.dialog_text}>Let's log in with your new
+                            credentials!</Text>
+                    </Dialog.Content>
+                </Dialog>
+            </Portal>
             <Logo/>
             <Header>Welcome Back!</Header>
             <TextInput
@@ -67,10 +81,10 @@ export default function LoginScreen() {
                     <Text style={styles.forgot}>Forgot your password ?</Text>
                 </TouchableOpacity>
             </View>
-            <GeneralButton mode="contained" onPressFunction={onLoginPressed} text={"Login"} style=""/>
+            <GeneralButton mode="contained" onPressFunction={onLoginPressed} text={"Login"} style={styles.login}/>
 
             <View style={styles.row}>
-                <Text>You do not have an account yet ?</Text>
+                <Text style={styles.account}>You do not have an account yet ?</Text>
             </View>
             <View style={styles.row}>
                 <TouchableOpacity
@@ -91,7 +105,7 @@ export default function LoginScreen() {
     );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (theme) => StyleSheet.create({
     forgotPassword: {
         width: "100%",
         alignItems: "flex-end",
@@ -102,11 +116,30 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     forgot: {
-        fontSize: 13,
+        fontSize: 16,
         color: theme.colors.secondary,
     },
     link: {
         fontWeight: "bold",
+        fontFamily: 'Inter-Black',
         color: theme.colors.primary,
+        paddingTop: 10,
+        fontSize: 18
     },
+    account: {
+        fontSize: 16,
+        fontFamily: 'Inter-Black'
+    },
+    login: {
+        fontSize: 18
+    },
+    dialog: {
+        textAlign: 'center',
+        fontSize: 25,
+    },
+    dialog_text: {
+        textAlign: 'center',
+        fontSize: 18,
+    }
+
 });

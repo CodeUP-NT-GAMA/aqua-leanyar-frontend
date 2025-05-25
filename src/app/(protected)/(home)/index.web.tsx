@@ -1,20 +1,15 @@
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {Link, useRouter} from "expo-router";
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext} from "react";
 import {AuthContext} from "@/utils/authContext";
 import {Button, Card, Divider, Text, useTheme} from 'react-native-paper';
 import AppBackground from "@/components/generic/AppBackground";
 import GeneralButton from "@/components/generic/GeneralButton";
-import CustomSurface from "@/components/generic/CustomSurface";
-import CustomImageCarousal from "@/components/generic/CustomImageCarousal";
-import PagerView from "react-native-pager-view";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-
 
 const {height, width} = Dimensions.get("window");
 const LeftSwimming = props => <FontAwesome name="person-swimming" size={35} color={props.color}/>
 const LeftShopping = props => <FontAwesome name="basket-shopping" size={35} color={props.color}/>
-
 
 export default function IndexScreen() {
     const router = useRouter();
@@ -22,24 +17,15 @@ export default function IndexScreen() {
     const authState = useContext(AuthContext);
     const theme = useTheme();
     const styles = makeStyles(theme);
-    const pagerRef = useRef<PagerView>(null);
-    const [page, setPage] = useState(0);
-    const pages = ['https://media.istockphoto.com/id/2185186618/photo/christmas-tree-and-gift-boxes-on-purple-background-new-year-concept.jpg?s=2048x2048&w=is&k=20&c=oxpxOmKrtn0GRQN6L-p53eYuKSyFjzlmGczq55RkOeY=', 'https://media.istockphoto.com/id/2185186642/photo/christmas-tree-and-gift-boxes-on-purple-background-new-year-concept.jpg?s=2048x2048&w=is&k=20&c=5NIzn4z6uWqAD0y5EbM_jJIDdn4PMfyYpjkWebq15Ys='];
 
     const swimming = () => LeftSwimming({color: theme.colors.primary})
     const shopping = () => LeftShopping({color: theme.colors.primary})
+
     return (
         <AppBackground>
             <ScrollView horizontal={false} showsVerticalScrollIndicator={false} style={styles.container}
                         contentContainerStyle={styles.container}>
                 <View style={[styles.column_style]}>
-
-                    <View>
-                        <CustomSurface elevation={5} theme={theme} mode={"elevated"} style={styles.surface}>
-                            <CustomImageCarousal initialPage={0} pages={pages} style={styles.image_slider} theme={theme}
-                                                 delay={3000} pagerRef={pagerRef} page={page} setPage={setPage}/>
-                        </CustomSurface>
-                    </View>
 
                     <View>
                         <Card style={styles.activity_card}>
@@ -92,6 +78,7 @@ export default function IndexScreen() {
                 </View>
             </ScrollView>
         </AppBackground>
+
 
     );
 }

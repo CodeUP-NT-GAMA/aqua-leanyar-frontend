@@ -64,6 +64,21 @@ export default function RootLayout() {
                     }}
                 />
                 <Tabs.Screen
+                    name="(shop)"
+                    options={{
+                        title: "Shop",
+                        tabBarLabel: "Shop",
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
+                        tabBarIcon: ({color, size}) => (
+                            <MaterialCommunityIcons
+                                name="shopping"
+                                size={size}
+                                color={color}
+                            />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
                     name="cart"
                     options={{
                         title: "Cart",
@@ -90,21 +105,6 @@ export default function RootLayout() {
                         tabBarIcon: ({color, size}) => (
                             <MaterialCommunityIcons
                                 name="emoticon-happy-outline"
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tabs.Screen
-                    name="(shop)"
-                    options={{
-                        title: "Shop",
-                        tabBarLabel: "Shop",
-                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
-                        tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons
-                                name="shopping"
                                 size={size}
                                 color={color}
                             />

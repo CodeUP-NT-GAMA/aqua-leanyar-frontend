@@ -1,12 +1,10 @@
 import {View, Dimensions, ScrollView, StyleSheet} from "react-native";
-import {AppText} from "@/components/AppText";
-import {Link, useRouter} from "expo-router";
+import {useRouter} from "expo-router";
 import AppBackground from "@/components/generic/AppBackground";
-import {Button, Card, Divider, Text, useTheme} from 'react-native-paper';
+import {Card, Divider, Text, useTheme} from 'react-native-paper';
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import {ActivityService} from "@/service/ActivityService";
-import React, {useContext, useRef, useState, useEffect} from "react";
-import {AuthContext} from "@/utils/authContext";
+import React, {useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GeneralButton from "@/components/generic/GeneralButton";
 

@@ -1,10 +1,13 @@
-import {Alert} from "react-native";
+import {Alert, StyleSheet, Dimensions} from "react-native";
 import * as Linking from "expo-linking";
 import {useEffect, useState} from "react";
 import {useStripe} from "@stripe/stripe-react-native";
 import CheckoutButton from "./CheckoutButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {CheckoutService} from "@/service/CheckoutService";
+import GeneralButton from "@/components/generic/GeneralButton";
+
+const {width, height} = Dimensions.get("window");
 
 
 async function fetchPaymentSheetParams() {
@@ -76,11 +79,14 @@ export default function CheckoutScreen() {
     }, []);
 
     return (
-        <CheckoutButton
-            style={{}}
-            onPress={openPaymentSheet}
-            disabled={!loading}
-            title="Checkout"
-        />
+        <GeneralButton onPressFunction={openPaymentSheet} text="Proceed to Checkout" style={styles.checkout}
+                       mode={"contained"} disabled={!loading}/>
     );
 }
+
+const styles = StyleSheet.create({
+    checkout: {
+        alignSelf: "center",
+        width: width * 0.8,
+    },
+});

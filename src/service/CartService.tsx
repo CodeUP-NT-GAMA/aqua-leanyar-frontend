@@ -77,4 +77,20 @@ export class CartService {
         })
     }
 
+    static getCart(token: string): Promise<AxiosResponse<CartResponse>> {
+        return axiosInstance.get<CartResponse>("/cart", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            }
+        })
+    }
+
+    static async getCartItemCount(token: string): Promise<number> {
+        let cart = await CartService.getCart(token);
+        return cart?.data?.result?.items?.length;
+    }
+
+
+
 }

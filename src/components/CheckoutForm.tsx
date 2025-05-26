@@ -1,6 +1,7 @@
 import {useRouter} from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CheckoutButton from "@/components/CheckoutButton";
+import GeneralButton from "@/components/generic/GeneralButton";
 import {CheckoutService} from "@/service/CheckoutService";
 
 async function openPaymentModal(): Promise<void> {

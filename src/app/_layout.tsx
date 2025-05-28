@@ -1,5 +1,4 @@
 import {Stack} from "expo-router";
-
 import {GluestackUIProvider} from "@/components/ui/gluestack-ui-provider";
 import "../../global.css";
 import React, {useEffect} from "react";
@@ -19,7 +18,7 @@ import {
 import merge from "deepmerge";
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import {BadgeProvider} from "@/components/generic/CartContext";
+import {CartProvider} from "@/components/generic/CartContext";
 
 const customDarkTheme = {...MD3DarkTheme, colors: Colors.dark};
 const customLightTheme = {...MD3LightTheme, colors: Colors.light};
@@ -76,7 +75,7 @@ export default function RootLayout() {
             titleLarge: customFont,
             headlineSmall: customFont,
             heavy: customFont,
-            heeader: customFont,
+            header: customFont,
         }
     };
 
@@ -90,7 +89,7 @@ export default function RootLayout() {
                            theme={customizedFontTheme}>
                 <AuthProvider>
                     <ThemeProvider value={customizedFontTheme}>
-                        <BadgeProvider>
+                        <CartProvider>
                             <StatusBar style="auto"/>
                             <Stack>
                                 <Stack.Screen
@@ -116,7 +115,7 @@ export default function RootLayout() {
                                     }}
                                 />
                             </Stack>
-                        </BadgeProvider>
+                        </CartProvider>
                     </ThemeProvider>
                 </AuthProvider>
             </PaperProvider>

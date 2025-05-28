@@ -9,6 +9,8 @@ import CustomSurface from "@/components/generic/CustomSurface";
 import CustomImageCarousal from "@/components/generic/CustomImageCarousal";
 import PagerView from "react-native-pager-view";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import {useCart} from "@/components/generic/CartContext";
+import ToastManager, {Toast} from 'toastify-react-native'
 
 
 const {height, width} = Dimensions.get("window");
@@ -25,6 +27,7 @@ export default function IndexScreen() {
     const pagerRef = useRef<PagerView>(null);
     const [page, setPage] = useState(0);
     const pages = ['https://media.istockphoto.com/id/2185186618/photo/christmas-tree-and-gift-boxes-on-purple-background-new-year-concept.jpg?s=2048x2048&w=is&k=20&c=oxpxOmKrtn0GRQN6L-p53eYuKSyFjzlmGczq55RkOeY=', 'https://media.istockphoto.com/id/2185186642/photo/christmas-tree-and-gift-boxes-on-purple-background-new-year-concept.jpg?s=2048x2048&w=is&k=20&c=5NIzn4z6uWqAD0y5EbM_jJIDdn4PMfyYpjkWebq15Ys='];
+    const cartContext = useCart();
 
     const swimming = () => LeftSwimming({color: theme.colors.primary})
     const shopping = () => LeftShopping({color: theme.colors.primary})
@@ -88,8 +91,14 @@ export default function IndexScreen() {
                         ) : null}
                         <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
                                        style={{backgroundColor: theme.colors.primary}}/>
+                        <GeneralButton mode={"contained"} style={undefined} text={"Add to Cart"}
+                                       onPressFunction={async () => {
+                                           cartContext?.addToCart(1, 1);
+                                           Toast.success('Item added to your cart!', 'bottom');
+                                       }}/>
                     </View>
                 </View>
+                <ToastManager/>
             </ScrollView>
         </AppBackground>
 

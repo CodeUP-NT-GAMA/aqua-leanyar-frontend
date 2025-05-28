@@ -1,13 +1,15 @@
 import * as React from 'react';
-import {View, Dimensions, StyleSheet} from "react-native";
-import {Text, Divider, Surface} from "react-native-paper";
+import {Dimensions, StyleSheet, View} from "react-native";
+import {Divider, Surface, Text} from "react-native-paper";
 import {FileService} from "@/service/FileService"
 import {Image} from "expo-image";
 import GeneralButton from "@/components/generic/GeneralButton";
+import {Toast} from 'toastify-react-native'
+
 
 const {height, width} = Dimensions.get("window");
 
-export default function CartItem({item, theme}) {
+export default function CartItem({item, theme, removeMethod}) {
 
     return (
         <View
@@ -30,7 +32,8 @@ export default function CartItem({item, theme}) {
                         = {item.quantity * item.Product.product_price} AUD</Text>
                     <GeneralButton mode={"elevated"} style={undefined} text={"Remove"}
                                    onPressFunction={async () => {
-                                       // perform remove cart logic
+                                       removeMethod(item.id);
+                                       Toast.warn('Item removed from your cart!', 'bottom');
                                    }}/>
                 </View>
 

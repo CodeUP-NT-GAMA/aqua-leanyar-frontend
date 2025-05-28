@@ -2,7 +2,7 @@ import "../../../global.css";
 import {StatusBar} from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {AuthContext} from "@/utils/authContext";
-import {useBadge} from "@/components/generic/CartContext";
+import {useCart} from "@/components/generic/CartContext";
 import {Redirect, Tabs} from "expo-router";
 import React from "react";
 
@@ -14,7 +14,7 @@ export const unstable_settings = {
 export default function RootLayout() {
 
     const authState = React.useContext(AuthContext);
-    const {count} = useBadge();
+    const cartContext = useCart();
 
     if (!authState.isReady) {
         return null;
@@ -82,7 +82,7 @@ export default function RootLayout() {
                     name="cart"
                     options={{
                         title: "Cart",
-                        tabBarBadge: count > 0 ? count : undefined,
+                        tabBarBadge: cartContext?.count > 0 ? cartContext?.count : undefined,
                         headerTitleStyle: {fontFamily: "AutourOne-Regular"},
                         tabBarBadgeStyle: {
                             backgroundColor: "tomato",

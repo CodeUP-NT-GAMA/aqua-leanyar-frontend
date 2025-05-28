@@ -1,8 +1,7 @@
-import {Alert, StyleSheet, Dimensions} from "react-native";
+import {Alert, Dimensions, StyleSheet} from "react-native";
 import * as Linking from "expo-linking";
 import {useEffect, useState} from "react";
 import {useStripe} from "@stripe/stripe-react-native";
-import CheckoutButton from "./CheckoutButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {CheckoutService} from "@/service/CheckoutService";
 import GeneralButton from "@/components/generic/GeneralButton";

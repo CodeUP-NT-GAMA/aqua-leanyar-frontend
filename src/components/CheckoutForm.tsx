@@ -1,8 +1,10 @@
 import {useRouter} from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CheckoutButton from "@/components/CheckoutButton";
 import GeneralButton from "@/components/generic/GeneralButton";
 import {CheckoutService} from "@/service/CheckoutService";
+import {StyleSheet, Dimensions} from "react-native";
+
+const {width} = Dimensions.get("window");
 
 async function openPaymentModal(): Promise<void> {
 
@@ -21,5 +23,13 @@ async function openPaymentModal(): Promise<void> {
 }
 
 export default function CheckoutForm() {
-    return <CheckoutButton onPress={openPaymentModal} title="Checkout"/>;
+    return <GeneralButton onPressFunction={openPaymentModal} text="Proceed to Checkout" style={styles.checkout}
+                          mode={"contained"}/>;
 }
+
+const styles = StyleSheet.create({
+    checkout: {
+        alignSelf: "center",
+        width: width * 0.8,
+    },
+});

@@ -25,7 +25,7 @@ export function AppText({
                 size === "medium" && "text-base mb-3",
                 size === "large" && "text-lg mb-4",
                 size === "heading" && "text-xl mb-5",
-                bold && "font-bold",
+                bold && "fonts-bold",
                 color === "primary" && "text-black",
                 color === "secondary" && "text-gray-500",
                 color === "tertiary" && "text-gray-400",

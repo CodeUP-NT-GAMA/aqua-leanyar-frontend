@@ -2,6 +2,7 @@ import "../../../global.css";
 import {StatusBar} from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {AuthContext} from "@/utils/authContext";
+import {useCart} from "@/components/generic/CartContext";
 import {Redirect, Tabs} from "expo-router";
 import React from "react";
 
@@ -13,6 +14,7 @@ export const unstable_settings = {
 export default function RootLayout() {
 
     const authState = React.useContext(AuthContext);
+    const cartContext = useCart();
 
     if (!authState.isReady) {
         return null;
@@ -46,7 +48,7 @@ export default function RootLayout() {
                     }}
                 />
                 <Tabs.Screen
-                    name="second"
+                    name="activity"
                     options={{
                         title: "Activities",
                         tabBarLabel: "Activities",
@@ -62,10 +64,26 @@ export default function RootLayout() {
                     }}
                 />
                 <Tabs.Screen
-                    name="third"
+                    name="(shop)"
+                    options={{
+                        title: "Shop",
+                        tabBarLabel: "Shop",
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
+                        tabBarIcon: ({color, size}) => (
+                            <MaterialCommunityIcons
+                                name="shopping"
+                                size={size}
+                                color={color}
+                            />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="cart"
                     options={{
                         title: "Cart",
-                        tabBarBadge: 2,
+                        tabBarBadge: cartContext?.count > 0 ? cartContext?.count : undefined,
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
                         tabBarBadgeStyle: {
                             backgroundColor: "tomato",
                             color: "white",
@@ -83,6 +101,7 @@ export default function RootLayout() {
                     name="(profile)"
                     options={{
                         title: "Profile",
+                        headerTitleStyle: {fontFamily: "AutourOne-Regular"},
                         tabBarIcon: ({color, size}) => (
                             <MaterialCommunityIcons
                                 name="emoticon-happy-outline"

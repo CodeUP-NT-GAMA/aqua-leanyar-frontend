@@ -3,12 +3,17 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "strict": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "src/*",
+        "./*"
       ],
       "@assets/*": [
         "assets/*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
       ]
     }
   },

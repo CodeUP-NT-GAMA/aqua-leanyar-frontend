@@ -1,10 +1,12 @@
-import {Alert} from "react-native";
+import {Alert, Dimensions, StyleSheet} from "react-native";
 import * as Linking from "expo-linking";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useStripe} from "@stripe/stripe-react-native";
-import CheckoutButton from "./CheckoutButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {CheckoutService} from "@/service/CheckoutService";
+import GeneralButton from "@/components/generic/GeneralButton";
+
+const {width, height} = Dimensions.get("window");
 
 
 async function fetchPaymentSheetParams() {
@@ -60,27 +62,34 @@ export default function CheckoutScreen() {
     };
 
     const openPaymentSheet = async () => {
+        setLoading(true);
+        await initializePaymentSheet();
         const {error} = await presentPaymentSheet();
 
         console.log("Open payment sheet");
 
         if (error) {
             Alert.alert(`Error code: ${error.code}`, error.message);
+            setLoading(false);
         } else {
             Alert.alert("Success", "Your order is confirmed!");
+            setLoading(false);
         }
     };
 
-    useEffect(() => {
-        initializePaymentSheet();
-    }, []);
+    // useEffect(() => {
+    //     initializePaymentSheet();
+    // }, []);
 
     return (
-        <CheckoutButton
-            style={{}}
-            onPress={openPaymentSheet}
-            disabled={!loading}
-            title="Checkout"
-        />
+        <GeneralButton onPressFunction={openPaymentSheet} text="Proceed to Checkout" style={styles.checkout}
+                       mode={"contained"} disabled={loading}/>
     );
 }
+
+const styles = StyleSheet.create({
+    checkout: {
+        alignSelf: "center",
+        width: width * 0.8,
+    },
+});

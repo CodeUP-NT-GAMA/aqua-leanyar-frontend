@@ -16,4 +16,18 @@ export class LoginService {
             });
     }
 
+    static register(email: string, firstName: string, lastName: string, password: string, phone: string): Promise<AxiosResponse<ILoginResponse>> {
+
+        return axiosInstance.post<ILoginResponse>("/users",
+            {
+                username: email,
+                email: email,
+                password: password,
+                first_name: firstName,
+                last_name: lastName
+            });
+
+
+    }
+
 }

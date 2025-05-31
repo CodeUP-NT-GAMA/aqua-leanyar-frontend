@@ -7,6 +7,7 @@ import {ActivityService} from "@/service/ActivityService";
 import React, {useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GeneralButton from "@/components/generic/GeneralButton";
+import {FileService} from "@/service/FileService";
 
 
 const {height, width} = Dimensions.get("window");
@@ -26,6 +27,7 @@ export default function SecondScreen() {
     const fetchActivities = async (pageNumber = 1) => {
         try {
             const value = await AsyncStorage.getItem("auth-key");
+            // @ts-ignore
             const auth = JSON.parse(value);
             const response = await ActivityService.getActivities(auth.token, pageNumber);
 
@@ -60,20 +62,19 @@ export default function SecondScreen() {
                 <View style={styles.view_container}>
                     {
                         data.map(activity => (
-                            <Card style={styles.activity_card} key={"activity-" + activity.id}>
+                            <Card style={styles.activity_card} key={"activity-" + activity.id} elevation={5}>
                                 <Card.Title title={activity.name} subtitle={activity.short_name}
                                             left={() => <FontAwesome name="person-swimming" size={35}
                                                                      color={theme.colors.primary}/>}
                                             titleStyle={styles.card_title}/>
                                 <Divider bold={true}/>
-                                <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
+                                <Card.Cover source={{uri: FileService.buildURI(activity.ActivityMedia[0].MediaId)}}/>
                                 <Card.Content>
-                                    <Text variant="bodyMedium" style={styles.card_content}>From a puddle of water to
-                                        giant
-                                        waves, we have got them all!</Text>
+                                    <Text variant="bodyMedium" style={styles.card_content}>{activity.description}</Text>
                                 </Card.Content>
                                 <Card.Actions>
-                                    <GeneralButton mode={"contained"} text={"Tell me more!"} onPressFunction={() => {
+                                    <GeneralButton mode={"contained"} text={"Tell me more!"} style={{}}
+                                                   onPressFunction={() => {
                                         router.push({
                                             pathname: 'activity/[id]',
                                             params: {id: activity.id, title: activity.name},
@@ -109,13 +110,16 @@ const makeStyles = (theme) => StyleSheet.create({
         backgroundColor: theme.colors.secondaryContainer
     },
     view_container: {
-        gap: 30,
+        gap: 15,
         padding: width * 0.03,
         flexDirection: "column",
     },
     card_title: {
         fontSize: 20,
         fontWeight: "300",
+    },
+    card_content: {
+        paddingTop: 10,
     },
     endText: {
         alignSelf: "center",

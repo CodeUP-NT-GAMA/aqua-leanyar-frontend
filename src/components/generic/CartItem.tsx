@@ -5,6 +5,8 @@ import {FileService} from "@/service/FileService"
 import {Image} from "expo-image";
 import GeneralButton from "@/components/generic/GeneralButton";
 import {Toast} from 'toastify-react-native'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {AnalyticService} from "@/service/AnalyticService";
 
 
 const {height, width} = Dimensions.get("window");
@@ -33,7 +35,16 @@ export default function CartItem({item, theme, removeMethod}) {
                     <GeneralButton mode={"elevated"} style={undefined} text={"Remove"}
                                    onPressFunction={async () => {
                                        removeMethod(item.id);
-                                       Toast.warn('Item removed from your cart!', 'bottom');
+                                       const value = await AsyncStorage.getItem("auth-key");
+                                       const auth = JSON.parse(value);
+                                       const token = auth.token;
+                                       await AnalyticService.removeItemCartEvent(token, item.Product)
+                                           .catch((error: Error) => {
+                                               console.log(error)
+                                           })
+                                           .then(() => {
+                                               Toast.warn('Item removed from your cart!', 'bottom');
+                                           });
                                    }}/>
                 </View>
 

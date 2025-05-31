@@ -11,7 +11,8 @@ import PagerView from "react-native-pager-view";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import {useCart} from "@/components/generic/CartContext";
 import ToastManager, {Toast} from 'toastify-react-native'
-
+import {AnalyticService} from "@/service/AnalyticService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const {height, width} = Dimensions.get("window");
 const LeftSwimming = props => <FontAwesome name="person-swimming" size={35} color={props.color}/>
@@ -26,11 +27,37 @@ export default function IndexScreen() {
     const styles = makeStyles(theme);
     const pagerRef = useRef<PagerView>(null);
     const [page, setPage] = useState(0);
-    const pages = ['https://media.istockphoto.com/id/2185186618/photo/christmas-tree-and-gift-boxes-on-purple-background-new-year-concept.jpg?s=2048x2048&w=is&k=20&c=oxpxOmKrtn0GRQN6L-p53eYuKSyFjzlmGczq55RkOeY=', 'https://media.istockphoto.com/id/2185186642/photo/christmas-tree-and-gift-boxes-on-purple-background-new-year-concept.jpg?s=2048x2048&w=is&k=20&c=5NIzn4z6uWqAD0y5EbM_jJIDdn4PMfyYpjkWebq15Ys='];
+    const pages = [
+        require('@assets/general/slider/slider-1.jpg'),
+        require('@assets/general/slider/slider-2.jpg'),
+        require('@assets/general/slider/slider-3.jpg'),
+        require('@assets/general/slider/slider-4.jpg'),
+        require('@assets/general/slider/slider-5.jpg')
+    ];
     const cartContext = useCart();
 
     const swimming = () => LeftSwimming({color: theme.colors.primary})
     const shopping = () => LeftShopping({color: theme.colors.primary})
+
+    let dummy_product = {
+        product_id: 1,
+        product_name: "Test Product",
+        product_price: 11.24,
+        quantity: 1,
+        ProductType: {
+            description: "Swim wear",
+            id: 1,
+            icon: "string",
+            createdAt: "string",
+            updatedAt: "string"
+        },
+        type: "",
+        createdAt: "string",
+        updatedAt: "string",
+        ProductTypeId: 1,
+        ProductMedia: []
+    }
+
     return (
         <AppBackground>
             <ScrollView horizontal={false} showsVerticalScrollIndicator={false} style={styles.container}
@@ -49,7 +76,7 @@ export default function IndexScreen() {
                             <Card.Title title="Ready to get wet?" subtitle="Let's Go!" left={swimming}
                                         titleStyle={styles.card_title}/>
                             <Divider bold={true}/>
-                            <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
+                            <Card.Cover source={require('@assets/general/media/cover-1.jpeg')}/>
                             <Card.Content>
                                 <Text variant="bodyMedium" style={styles.card_content}>From a puddle of water to giant
                                     waves, we have got them all!</Text>
@@ -65,9 +92,11 @@ export default function IndexScreen() {
                                         left={shopping}
                                         titleStyle={styles.card_title}/>
                             <Divider bold={true}/>
-                            <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
+                            <Card.Cover source={require('@assets/general/media/cover-2.jpg')}/>
                             <Card.Actions>
-                                <Button mode={"contained"}>Show All</Button>
+                                <Button mode={"contained"} onPress={() => {
+                                    router.replace("/(protected)/(shop)")
+                                }}>Take me to the store!</Button>
                             </Card.Actions>
                         </Card>
                     </View>
@@ -94,7 +123,16 @@ export default function IndexScreen() {
                         <GeneralButton mode={"contained"} style={undefined} text={"Add to Cart"}
                                        onPressFunction={async () => {
                                            cartContext?.addToCart(1, 1);
-                                           Toast.success('Item added to your cart!', 'bottom');
+                                           const value = await AsyncStorage.getItem("auth-key");
+                                           const auth = JSON.parse(value);
+                                           const token = auth.token;
+                                           await AnalyticService.addToCartEvent(token, dummy_product)
+                                               .catch((error: Error) => {
+                                                   console.log(error)
+                                               })
+                                               .then(() => {
+                                                   Toast.success('Item added to your cart!', 'bottom');
+                                               });
                                        }}/>
                     </View>
                 </View>
@@ -134,6 +172,7 @@ const makeStyles = (theme) => StyleSheet.create({
     },
     card_content: {
         fontSize: 15,
+        paddingTop: 10,
     },
     activity_card: {
         backgroundColor: theme.colors.secondaryContainer,

@@ -6,6 +6,8 @@ import {Button, Card, Divider, Text, useTheme} from 'react-native-paper';
 import AppBackground from "@/components/generic/AppBackground";
 import GeneralButton from "@/components/generic/GeneralButton";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import {useCart} from "@/components/generic/CartContext";
+import ToastManager, {Toast} from 'toastify-react-native'
 
 const {height, width} = Dimensions.get("window");
 const LeftSwimming = props => <FontAwesome name="person-swimming" size={35} color={props.color}/>
@@ -17,6 +19,8 @@ export default function IndexScreen() {
     const authState = useContext(AuthContext);
     const theme = useTheme();
     const styles = makeStyles(theme);
+    const cartContext = useCart();
+
 
     const swimming = () => LeftSwimming({color: theme.colors.primary})
     const shopping = () => LeftShopping({color: theme.colors.primary})
@@ -74,8 +78,14 @@ export default function IndexScreen() {
                         ) : null}
                         <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
                                        style={{backgroundColor: theme.colors.primary}}/>
+                        <GeneralButton mode={"contained"} style={undefined} text={"Add to Cart"}
+                                       onPressFunction={async () => {
+                                           cartContext?.addToCart(1, 1);
+                                           Toast.success('Item added to your cart!', 'bottom');
+                                       }}/>
                     </View>
                 </View>
+                <ToastManager/>
             </ScrollView>
         </AppBackground>
 

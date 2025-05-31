@@ -38,11 +38,9 @@ export default function CustomImageCarousal({
             onPageSelected={(e) => setPage(e.nativeEvent.position)}
             {...props}
         >
-            {pages.map((title, idx) => (
+            {pages.map((src, idx) => (
                 <View key={'id-' + idx}>
-                    <Image source={{
-                        uri: title
-                    }}
+                    <Image source={src}
                            style={styles.image}
                            cachePolicy={"disk"}
                     />
@@ -63,6 +61,7 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: "100%",
+        borderRadius: 20
 
     }
 });

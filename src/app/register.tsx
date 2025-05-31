@@ -1,7 +1,8 @@
 import GeneralButton from "@/components/generic/GeneralButton";
+import PrivacyPolicyScreen from "@/components/static/PrivacyPolicyScreen";
 import {AuthContext} from "@/utils/authContext";
 import {useContext, useState} from "react";
-import {Dimensions, ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, TouchableOpacity, View, Linking} from "react-native";
 import {emailValidator} from "@/helper/emailValidator";
 import {passwordValidator} from "@/helper/passwordValidator";
 import {requiredValidator} from "@/helper/requiredValidator";
@@ -10,13 +11,19 @@ import Logo from "@/components/Logo";
 import TextInput from "@/components/generic/TextInput";
 import Header from "@/components/Header";
 import {useRouter} from "expo-router";
-import {Text, useTheme} from "react-native-paper";
+
+import {Text, useTheme, Divider, Portal, Modal} from "react-native-paper";
 import {LoginService} from "@/service/LoginService";
 
 const {height, width} = Dimensions.get("window");
 
 export default function LoginScreen() {
     const authContext = useContext(AuthContext);
+    const [visible, setVisible] = useState(false);
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
     const router = useRouter();
     const theme = useTheme();
     const styles = makeStyles(theme);
@@ -67,6 +74,11 @@ export default function LoginScreen() {
     return (
 
         <Background>
+            <Portal>
+                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.policy}>
+                    <PrivacyPolicyScreen/>
+                </Modal>
+            </Portal>
             <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
                         contentContainerStyle={styles.container}>
                 <Logo/>
@@ -142,6 +154,14 @@ export default function LoginScreen() {
                     description="Phone number"
                 />
 
+                <Divider/>
+
+                <Text variant={"bodySmall"}>By clicking register, you consent to our <Text variant={"bodySmall"}
+                                                                                           style={styles.link}
+                                                                                           onPress={showModal}>
+                    terms of service
+                </Text>.</Text>
+
                 <GeneralButton mode="contained" onPressFunction={onRegisterPressed} text={"Register"} style=""
                                disabled={isloading}
                                icon="refresh" loading={isloading}/>
@@ -164,7 +184,7 @@ const makeStyles = (theme) => StyleSheet.create({
     forgotPassword: {
         width: "100%",
         alignItems: "flex-end",
-        marginBottom: 10,
+        marginBottom: 10
     },
     row: {
         flexDirection: "row",
@@ -172,7 +192,7 @@ const makeStyles = (theme) => StyleSheet.create({
     },
     forgot: {
         fontSize: 13,
-        color: theme.colors.secondary,
+        color: theme.colors.secondary
     },
     account: {
         fontSize: 16,
@@ -192,5 +212,12 @@ const makeStyles = (theme) => StyleSheet.create({
         justifyContent: 'center', // Vertically center if needed
         paddingBottom: height * 0.1,
         width: "100%"
+    },
+    policy: {
+        backgroundColor: theme.colors.secondary,
+        alignItems: 'center',
+        alignSelf: 'center',
+        height: "50%",
+        borderRadius: 35
     }
 });

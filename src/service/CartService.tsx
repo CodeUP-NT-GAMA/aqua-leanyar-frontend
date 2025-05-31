@@ -77,4 +77,31 @@ export class CartService {
         })
     }
 
+    static getCart(token: string): Promise<AxiosResponse<CartResponse>> {
+        return axiosInstance.get<CartResponse>("/cart", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            }
+        })
+    }
+
+    static removeCartItem(token: string, cartItemId: number): Promise<AxiosResponse<CartResponse>> {
+        return axiosInstance.delete<CartResponse>("/cart", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            },
+            params: {
+                item_id: cartItemId
+            }
+        })
+    }
+
+    static async getCartItemCount(token: string): Promise<number> {
+        let cart = await CartService.getCart(token);
+        return cart?.data?.result?.items?.length;
+    }
+
+
 }

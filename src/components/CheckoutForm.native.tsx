@@ -38,8 +38,6 @@ export default function CheckoutScreen() {
 
     const initializePaymentSheet = async () => {
 
-        console.log("Initializing payment sheet");
-
         const sheet = await fetchPaymentSheetParams();
         const paymentIntent = sheet.paymentIntent;
         const ephemeralKey = sheet.ephemeralKey;
@@ -65,8 +63,6 @@ export default function CheckoutScreen() {
         setLoading(true);
         await initializePaymentSheet();
         const {error} = await presentPaymentSheet();
-
-        console.log("Open payment sheet");
 
         if (error) {
             Alert.alert(`Error code: ${error.code}`, error.message);

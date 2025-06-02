@@ -124,6 +124,7 @@ export default function IndexScreen() {
                                        onPressFunction={async () => {
                                            cartContext?.addToCart(1, 1);
                                            const value = await AsyncStorage.getItem("auth-key");
+                                           // @ts-ignore
                                            const auth = JSON.parse(value);
                                            const token = auth.token;
                                            await AnalyticService.addToCartEvent(token, dummy_product)

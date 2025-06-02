@@ -36,6 +36,7 @@ export default function CartItem({item, theme, removeMethod}) {
                                    onPressFunction={async () => {
                                        removeMethod(item.id);
                                        const value = await AsyncStorage.getItem("auth-key");
+                                       // @ts-ignore
                                        const auth = JSON.parse(value);
                                        const token = auth.token;
                                        await AnalyticService.removeItemCartEvent(token, item.Product)

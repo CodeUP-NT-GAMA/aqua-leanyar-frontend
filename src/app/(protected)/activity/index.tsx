@@ -1,10 +1,10 @@
-import {View, Dimensions, ScrollView, StyleSheet} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {useRouter} from "expo-router";
 import AppBackground from "@/components/generic/AppBackground";
 import {Card, Divider, Text, useTheme} from 'react-native-paper';
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import {ActivityService} from "@/service/ActivityService";
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GeneralButton from "@/components/generic/GeneralButton";
 import {FileService} from "@/service/FileService";
@@ -35,6 +35,7 @@ export default function SecondScreen() {
             if (!response.data.result.pagination.next_page) {
                 setHasMore(false);
             } else {
+                // @ts-ignore
                 setData(prev => [...prev, ...response.data.result.data]);
                 setPage(response.data.result.pagination.current_page);
             }
@@ -75,7 +76,7 @@ export default function SecondScreen() {
                                 <Card.Actions>
                                     <GeneralButton mode={"contained"} text={"Tell me more!"} style={{}}
                                                    onPressFunction={() => {
-                                        router.push({
+                                                       router.push({
                                             pathname: 'activity/[id]',
                                             params: {id: activity.id, title: activity.name},
                                         });
@@ -86,7 +87,8 @@ export default function SecondScreen() {
                     }
 
                     {hasMore && !loading && (
-                        <GeneralButton mode={"contained"} text={"Show more"} onPressFunction={handleLoadMore}/>
+                        <GeneralButton mode={"contained"} text={"Show more"} onPressFunction={handleLoadMore}
+                                       style={{}}/>
                     )}
 
                     {!hasMore && <Text style={styles.endText}>You have got them all!</Text>}
@@ -128,21 +130,6 @@ const makeStyles = (theme) => StyleSheet.create({
         color: theme.colors.error
     }
 });
-
-
-// <View className="justify-center flex-1 p-4">
-//     <AppText center>Second Screen</AppText>
-//     <Link href="/activity/nested" push asChild>
-//         <Button title="Push to /activity/nested"/>
-//     </Link>
-//     <Button
-//         title="Back"
-//         theme="secondary"
-//         onPress={() => {
-//             router.back();
-//         }}
-//     />
-// </View>
 
 /**
  * /index

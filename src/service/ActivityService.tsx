@@ -6,6 +6,11 @@ interface ActivityResponse {
     result: Result
 }
 
+interface ActivityViewResponse {
+    error: boolean
+    result: Activity
+}
+
 interface Result {
     data: Activity[]
     pagination: Pagination
@@ -55,5 +60,18 @@ export class ActivityService {
             }
         })
     }
+
+    static getActivity(token: string, id: number): Promise<AxiosResponse<ActivityViewResponse>> {
+        return axiosInstance.get<ActivityViewResponse>("/activities/view", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            },
+            params: {
+                "id": id
+            }
+        })
+    }
+
 
 }

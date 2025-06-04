@@ -11,48 +11,13 @@ import {FileService} from "@/service/FileService";
 
 const {height, width} = Dimensions.get("window");
 
-type Product = {
-    id: string;
-    name: string;
-    price: string;
-    image: string;
-};
-
-const products: Product[] = [
-    {
-        id: '1',
-        name: 'Nike Air Max',
-        price: '$120',
-        image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg'
-    },
-    {
-        id: '2',
-        name: 'Adidas UltraBoost',
-        price: '$140',
-        image: 'https://tse1.mm.bing.net/th/id/OIP.H3FaN2EhQS38nzi2nE5SKgHaIp?pid=Api'
-    },
-    {
-        id: '3',
-        name: 'Puma RS-X',
-        price: '$100',
-        image: 'https://tse1.mm.bing.net/th/id/OIP.H3FaN2EhQS38nzi2nE5SKgHaIp?pid=Api'
-    },
-    {
-        id: '4',
-        name: 'New Balance 550',
-        price: '$110',
-        image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg'
-    },
-];
-
-const categories = ['All', 'Sneakers', 'Boots', 'Slides', 'Running', 'Casual'];
-
 export default function ShopScreen() {
 
     const theme = useTheme();
     const styles = makeStyles(theme);
 
     const [data, setData] = React.useState([]);
+    const [categories, setCategories] = React.useState([]);
     const [searchQuery, setSearchQuery] = React.useState('');
     const [hasMore, setHasMore] = React.useState(true);
     const [loading, setLoading] = React.useState(true);
@@ -66,6 +31,20 @@ export default function ShopScreen() {
                 ? prev.filter((c) => c !== chip)
                 : [...prev, chip]
         );
+    };
+
+    const fetchProductTypes = async (pageNumber = 1, pageSize = 100) => {
+        try {
+            const value = await AsyncStorage.getItem("auth-key");
+            // @ts-ignore
+            const auth = JSON.parse(value);
+            const response = await ProductService.getProductTypes(auth.token, pageNumber, pageSize);
+
+            // @ts-ignore
+            setCategories(response.data.result);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
     };
 
     const fetchProducts = async (pageNumber = 1, pageSize = 12) => {
@@ -94,6 +73,7 @@ export default function ShopScreen() {
     };
 
     React.useEffect(() => {
+        fetchProductTypes();
         fetchProducts(); // Fetch first page on mount
     }, []);
 
@@ -120,6 +100,26 @@ export default function ShopScreen() {
         )
     };
 
+    const renderBottom = () => {
+
+        return (
+            <>
+                {hasMore && !loading && (
+                    <GeneralButton
+                        mode="contained"
+                        text="Show more"
+                        onPressFunction={handleLoadMore}
+                        style={{marginTop: 10}}
+                    />
+                )}
+
+                {!hasMore && (
+                    <Text style={styles.endText}>You literally hit rock bottom!</Text>
+                )}
+            </>
+        )
+    };
+
     return (
         <AppBackground>
             <View style={{flex: 1}}>
@@ -139,10 +139,10 @@ export default function ShopScreen() {
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
                                 style={{flexDirection: "row", marginBottom: 10, paddingLeft: 30, height: 30}}>
                         {categories.map((cat) => (
-                            <Chip key={cat} style={{marginRight: 5,}}
+                            <Chip key={cat.id} style={{marginRight: 5,}}
                                   selected={selectedChips.includes(cat)}
                                   onPress={() => toggleChip(cat)}
-                            >{cat}</Chip>
+                            >{cat.description}</Chip>
                         ))}
                     </ScrollView>
                 </View>
@@ -166,22 +166,7 @@ export default function ShopScreen() {
                             columnWrapperStyle={{gap: 10, paddingTop: 10}}
                             showsVerticalScrollIndicator={false}
                             renderItem={renderProduct}
-                            ListFooterComponent={() => (
-                                <>
-                                    {hasMore && !loading && (
-                                        <GeneralButton
-                                            mode="contained"
-                                            text="Show more"
-                                            onPressFunction={handleLoadMore}
-                                            style={{marginTop: 10}}
-                                        />
-                                    )}
-
-                                    {!hasMore && (
-                                        <Text style={styles.endText}>You literally hit rock bottom!</Text>
-                                    )}
-                                </>
-                            )}
+                            ListFooterComponent={renderBottom}
                         />
                     </View>
                 }

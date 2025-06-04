@@ -13,8 +13,7 @@ export default function ActivityDetailScreen() {
     const {id, title} = useLocalSearchParams();
     const navigation = useNavigation();
     const [data, setData] = useState({});
-    const [loading, setLoading] = useState(true);
-    Ø
+
     const fetchActivity = async (id) => {
         try {
             const value = await AsyncStorage.getItem("auth-key");
@@ -27,8 +26,6 @@ export default function ActivityDetailScreen() {
             }
         } catch (error) {
             console.error('Error fetching posts:', error);
-        } finally {
-            setLoading(false);
         }
     };
 

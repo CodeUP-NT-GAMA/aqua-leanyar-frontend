@@ -5,8 +5,24 @@ import {useStripe} from "@stripe/stripe-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {CheckoutService} from "@/service/CheckoutService";
 import GeneralButton from "@/components/generic/GeneralButton";
+import {useCart} from "@/components/generic/CartContext";
+
 
 const {width, height} = Dimensions.get("window");
+
+async function markCompleted() {
+    const value = await AsyncStorage.getItem("auth-key");
+
+
+    if (value !== null) {
+        const auth = JSON.parse(value);
+        let response = await CheckoutService.completeCheckout(auth.token);
+        console.log(response.data);
+        if (response.status === 200) {
+            return true;
+        }
+    }
+}
 
 
 async function fetchPaymentSheetParams() {
@@ -35,6 +51,8 @@ async function fetchPaymentSheetParams() {
 export default function CheckoutScreen() {
     const {initPaymentSheet, presentPaymentSheet} = useStripe();
     const [loading, setLoading] = useState(false);
+    const cartContext = useCart();
+
 
     const initializePaymentSheet = async () => {
 
@@ -69,6 +87,9 @@ export default function CheckoutScreen() {
             setLoading(false);
         } else {
             Alert.alert("Success", "Your order is confirmed!");
+            await markCompleted();
+            cartContext.setItems([]);
+            cartContext.setCount(0)
             setLoading(false);
         }
     };

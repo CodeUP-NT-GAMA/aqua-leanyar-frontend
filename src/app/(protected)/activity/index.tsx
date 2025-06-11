@@ -56,6 +56,10 @@ export default function SecondScreen() {
         }
     };
 
+    const generateIcon = (icon: string) => {
+        return (<FontAwesome name={icon} size={35} color={theme.colors.primary}/>)
+    }
+
     return (
         <AppBackground>
             <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
@@ -65,13 +69,13 @@ export default function SecondScreen() {
                         data.map(activity => (
                             <Card style={styles.activity_card} key={"activity-" + activity.id} elevation={5}>
                                 <Card.Title title={activity.name} subtitle={activity.short_name}
-                                            left={() => <FontAwesome name="person-swimming" size={35}
-                                                                     color={theme.colors.primary}/>}
+                                            left={() => generateIcon(activity.icon)}
                                             titleStyle={styles.card_title}/>
                                 <Divider bold={true}/>
                                 <Card.Cover source={{uri: FileService.buildURI(activity.ActivityMedia[0].MediaId)}}/>
                                 <Card.Content>
-                                    <Text variant="bodyMedium" style={styles.card_content}>{activity.description}</Text>
+                                    <Text variant="bodyMedium"
+                                          style={styles.card_content}>{activity.introduction}</Text>
                                 </Card.Content>
                                 <Card.Actions>
                                     <GeneralButton mode={"contained"} text={"Tell me more!"} style={{}}
@@ -122,6 +126,7 @@ const makeStyles = (theme) => StyleSheet.create({
     },
     card_content: {
         paddingTop: 10,
+        fontSize: 17,
     },
     endText: {
         alignSelf: "center",

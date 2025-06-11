@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AnalyticService} from "@/service/AnalyticService";
 
 
-const {height, width} = Dimensions.get("window");
+const {width} = Dimensions.get("window");
 
 export default function CartItem({item, theme, removeMethod}) {
 
@@ -59,7 +59,6 @@ export default function CartItem({item, theme, removeMethod}) {
 const styles = StyleSheet.create({
     container: {
         width: width,
-        height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

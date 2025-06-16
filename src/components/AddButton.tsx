@@ -8,10 +8,11 @@ type Props = {
   mode?: 'text' | 'outlined' | 'contained';
   style?: object;
   labelStyle?: object;
+  isDisabled?: boolean;
 };
 
-const AddButton = ({label, onPress, icon, mode, style, labelStyle} : Props) => (
-  <Button icon={icon} mode={mode} onPress={onPress} style={style} labelStyle={labelStyle}>
+const AddButton = ({label, onPress, icon, mode, style, labelStyle,isDisabled} : Props) => (
+  <Button icon={icon} mode={mode} onPress={onPress} style={style} labelStyle={labelStyle} disabled={isDisabled}>
     {label}
   </Button>
 );

@@ -6,6 +6,11 @@ export interface ProductResponse {
     result: Result;
 }
 
+export interface SingleProductResponse {
+    error: boolean;
+    result: Product;
+}
+
 export interface Result {
     data: Product[];
     pagination: Pagination;
@@ -82,4 +87,15 @@ export class ProductService {
         })
     }
 
+    static async getProduct(token : string, id : number): Promise<AxiosResponse<SingleProductResponse>>  {
+        return axiosInstance.get<SingleProductResponse>("/products/id", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            },
+            params: {
+                "id": id,
+            }
+        })
+    }
 }

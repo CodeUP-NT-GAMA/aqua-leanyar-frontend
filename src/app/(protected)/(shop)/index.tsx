@@ -17,12 +17,12 @@ export default function ShopScreen() {
     const styles = makeStyles(theme);
 
     const [data, setData] = React.useState([]);
-    const [categories, setCategories] = React.useState([]);
+    const [categories, setCategories] = React.useState<any[]>([]);
     const [searchQuery, setSearchQuery] = React.useState('');
     const [hasMore, setHasMore] = React.useState(true);
     const [loading, setLoading] = React.useState(true);
     const [page, setPage] = React.useState(1);
-    const [selectedChips, setSelectedChips] = React.useState([]);
+    const [selectedChips, setSelectedChips] = React.useState<any[]>([]);
 
     const toggleChip = (chip) => {
         // @ts-ignore
@@ -78,7 +78,7 @@ export default function ShopScreen() {
     }, []);
 
 
-    const renderProduct = ({item}: { product }) => {
+    const renderProduct = ({item}: { item:any }) => {
 
         return (
             <Card style={styles.activity_card} key={"activity-" + item.id} elevation={5}>
@@ -91,8 +91,8 @@ export default function ShopScreen() {
                     <GeneralButton mode={"contained"} text={"View"} style={{}}
                                    onPressFunction={() => {
                                        router.push({
-                                           pathname: 'activity/[id]',
-                                           params: {id: activity.id, title: activity.name},
+                                           pathname:  '/[id]',
+                                           params: {id: item.product_id, title: item.product_name},
                                        });
                                    }}>Go to</GeneralButton>
                 </Card.Actions>

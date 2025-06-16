@@ -120,21 +120,6 @@ export default function IndexScreen() {
                         ) : null}
                         <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
                                        style={{backgroundColor: theme.colors.primary}}/>
-                        <GeneralButton mode={"contained"} style={undefined} text={"Add to Cart"}
-                                       onPressFunction={async () => {
-                                           cartContext?.addToCart(1, 1);
-                                           const value = await AsyncStorage.getItem("auth-key");
-                                           // @ts-ignore
-                                           const auth = JSON.parse(value);
-                                           const token = auth.token;
-                                           await AnalyticService.addToCartEvent(token, dummy_product)
-                                               .catch((error: Error) => {
-                                                   console.log(error)
-                                               })
-                                               .then(() => {
-                                                   Toast.success('Item added to your cart!', 'bottom');
-                                               });
-                                       }}/>
                     </View>
                 </View>
                 <ToastManager/>

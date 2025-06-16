@@ -118,8 +118,7 @@ export default function IndexScreen() {
                                 style={{}}
                             />
                         ) : null}
-                        <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
-                                       style={{backgroundColor: theme.colors.primary}}/>
+
                         <GeneralButton mode={"contained"} style={undefined} text={"Add to Cart"}
                                        onPressFunction={async () => {
                                            cartContext?.addToCart(1, 1);

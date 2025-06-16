@@ -1,100 +1,179 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Card, Divider, IconButton, TouchableRipple} from 'react-native-paper';
+import React from 'react';
+import {Dimensions, FlatList, StyleSheet, View} from 'react-native';
 import AppBackground from "@/components/generic/AppBackground";
+import {Card, Divider, Text, useTheme} from "react-native-paper";
+import {Image} from "expo-image";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {History, PurchaseHistoryService, PurchaseItem} from "@/service/PurchaseHistoryService";
+import GeneralButton from "@/components/generic/GeneralButton";
+import FontAwesome from "@expo/vector-icons/FontAwesome6";
 
-
-interface Item {
-    itemNumber: string;
-    description: string;
-    quantity: number;
-    value: number;
-}
-
-interface Order {
-    orderNumber: string;
-    items: Item[];
-    timestamp: string;
-}
-
-const testOrders: Order[] = [
-    {
-        orderNumber: 'ORD1234',
-        timestamp: '2025-05-01 14:23:45',
-        items: [
-            {itemNumber: 'ITEM001', description: 'Water Bottle', quantity: 2, value: 15},
-            {itemNumber: 'ITEM002', description: 'Swimming Goggles', quantity: 1, value: 25},
-        ],
-    },
-    {
-        orderNumber: 'ORD1235',
-        timestamp: '2025-05-05 09:12:30',
-        items: [
-            {itemNumber: 'ITEM003', description: 'Diving Fins', quantity: 1, value: 40},
-            {itemNumber: 'ITEM004', description: 'Snorkel Set', quantity: 1, value: 30},
-        ],
-    },
-    {
-        orderNumber: 'ORD1236',
-        timestamp: '2025-05-10 18:45:10',
-        items: [
-            {itemNumber: 'ITEM005', description: 'Swim Cap', quantity: 3, value: 10},
-            {itemNumber: 'ITEM006', description: 'Beach Towel', quantity: 2, value: 20},
-        ],
-    },
-];
+const {width, height} = Dimensions.get("window");
 
 const PurchaseHistory: React.FC = () => {
-    const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+    const theme = useTheme();
+    const styles = makeStyles(theme);
+    const [data, setData] = React.useState([]);
+    const [hasMore, setHasMore] = React.useState(true);
+    const [page, setPage] = React.useState(1);
+    const [loading, setLoading] = React.useState(true);
 
-    const calculateTotal = (items: Item[]) => {
-        return items.reduce((total, item) => total + item.value * item.quantity, 0);
+    const fetchHistory = async (pageNumber = 1, pageSize = 12) => {
+        try {
+            const value = await AsyncStorage.getItem("auth-key");
+            // @ts-ignore
+            const auth = JSON.parse(value);
+            const response = await PurchaseHistoryService.getPurchases(auth.token, pageNumber, pageSize);
+            if (!response.data.result.pagination.next_page) {
+                setHasMore(false);
+            }
+            // @ts-ignore
+            setData(prev => [...prev, ...response.data.result.data]);
+            setPage(response.data.result.pagination.current_page);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const toggleOrderDetails = (orderNumber: string) => {
-        setExpandedOrder(expandedOrder === orderNumber ? null : orderNumber);
+    const handleLoadMore = () => {
+        if (!loading && hasMore) {
+            fetchHistory(page + 1, 12);
+        }
     };
+
+    React.useEffect(() => {
+        fetchHistory(); // Fetch first page on mount
+    }, []);
+
+    const generateIcon = (icon: string) => {
+        return (<FontAwesome name={icon} size={35} color={theme.colors.primary}/>)
+    }
+
+
+    const renderHistory = ({item}: History) => {
+
+        function calculateTotal(PurchaseItems: PurchaseItem[]) {
+            let total = 0;
+
+            PurchaseItems.forEach(item => {
+                total += item.qty * item.unit_price;
+            });
+
+            return total;
+        }
+
+        return (
+            <Card style={{width: "95%", height: height * 0.2, margin: 15}} key={"history-" + item.id} elevation={5}>
+                <Card.Title
+                    title={item.transaction_id}
+                    subtitle={item.order_status}
+                    titleStyle={{fontSize: 20, fontWeight: "300"}}
+                    left={() => generateIcon('file-invoice-dollar')}
+                />
+                <Divider bold={true}/>
+                <Card.Content>
+                    <Text>Order Placed: {item.createdAt}</Text>
+                    <Text>Number of Items: {item.PurchaseItems.length}</Text>
+                    <Text>Order Total: {calculateTotal(item.PurchaseItems)} AUD</Text>
+                </Card.Content>
+                <Card.Actions>
+                    <GeneralButton mode="contained" onPressFunction={() => {
+                    }} text={"View Receipt"} style=""/>
+                </Card.Actions>
+            </Card>
+        )
+    };
+
+    const renderBottom = () => {
+
+        return (
+            <>
+                {hasMore && !loading && (
+                    <GeneralButton
+                        mode="contained"
+                        text="Show more"
+                        onPressFunction={handleLoadMore}
+                        style={{marginTop: 10}}
+                    />
+                )}
+
+                {!hasMore && (
+                    <Text style={{}}>You literally hit rock bottom!</Text>
+                )}
+            </>
+        )
+    };
+
 
     return (
         <AppBackground>
-            <ScrollView style={{}}>
-                {testOrders.map((order) => (
-                    <Card key={order.orderNumber} style={{}}>
-                        <TouchableRipple onPress={() => toggleOrderDetails(order.orderNumber)}
-                                         rippleColor="rgba(0, 0, 0, 0.2)">
-                            <Card.Title
-                                title={`Order Number: ${order.orderNumber}`}
-                                subtitle={`Purchased on: ${order.timestamp}`}
-                                right={(props) => (
-                                    <IconButton {...props}
-                                                icon={expandedOrder === order.orderNumber ? "chevron-up" : "chevron-down"}/>
-                                )}
-                            />
-                        </TouchableRipple>
-                        {expandedOrder === order.orderNumber && (
-                            <Card.Content>
-                                <Divider/>
-                                {order.items.map((item) => (
-                                    <View key={item.itemNumber} style={styles.itemContainer}>
-                                        <Text>Item No: {item.itemNumber}</Text>
-                                        <Text>Description: {item.description}</Text>
-                                        <Text>Quantity: {item.quantity}</Text>
-                                        <Text>Value: ${item.value}</Text>
-                                    </View>
-                                ))}
-                                <Text style={styles.total}>Total: ${calculateTotal(order.items)}</Text>
-                            </Card.Content>
-                        )}
-                    </Card>
-                ))}
-            </ScrollView>
+            <View style={styles.full_view}>
+                {data?.length == 0 && <View style={styles.no_history}>
+                    <Image cachePolicy={"disk"}
+                           source={require("@assets/general/empty.gif")}
+                           style={styles.empty_history}
+                           alt="empty_cart"
+                           transition={400}
+                           contentFit={"contain"}/>
+                    <Text variant="labelLarge" style={styles.no_history_text}>Hey!</Text>
+                    <Text variant="labelLarge" style={styles.no_history_text2}>It's lonely in here! Let's do some
+                        shopping..</Text>
+                </View>}
+
+                {data &&
+
+                    <View style={{flex: 1}}>
+                        <FlatList
+                            style={{
+                                alignSelf: "center",
+                                width: width * 0.9,
+                                paddingBottom: height * 0.1,
+                            }}
+                            data={data}
+                            keyExtractor={(item, index) => item.id}
+                            numColumns={1}
+                            horizontal={false}
+                            contentContainerStyle={{flexGrow: 1, paddingBottom: 100}}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={renderHistory}
+                            ListFooterComponent={renderBottom}
+                        />
+                    </View>
+                }
+            </View>
         </AppBackground>
     );
 };
 
-export default PurchaseHistory;
+const makeStyles = (theme) => StyleSheet.create({
+    full_view: {
+        width: width * 0.9,
+        height: height,
+        alignSelf: "center",
+    },
+    no_history: {
+        flex: 1,
+        width: '100%',
+        borderRadius: 50
 
-const styles = StyleSheet.create({
-    itemContainer: {marginBottom: 10, backgroundColor: '#f0f0f0', padding: 10, borderRadius: 5},
-    total: {fontSize: 16, fontWeight: 'bold', marginTop: 10, textAlign: 'right', color: '#555'},
+    },
+    empty_history: {
+        height: height * 0.5,
+        opacity: 80
+    },
+    no_history_text: {
+        fontSize: 28,
+        alignSelf: 'center',
+        color: theme.colors.error
+    },
+    no_history_text2: {
+        fontSize: 22,
+        alignSelf: 'center',
+        textAlign: 'center',
+        color: theme.colors.error
+    }
 });
+
+export default PurchaseHistory;

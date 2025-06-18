@@ -23,6 +23,11 @@ const PurchaseHistory: React.FC = () => {
         return date?.substring(0, 10);
     }
 
+    const formatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
     const fetchHistory = async (pageNumber = 1, pageSize = 12) => {
         try {
             const value = await AsyncStorage.getItem("auth-key");
@@ -66,7 +71,7 @@ const PurchaseHistory: React.FC = () => {
                 total += item.qty * item.unit_price;
             });
 
-            return total;
+            return formatter.format(total);
         }
 
         return (
@@ -104,12 +109,12 @@ const PurchaseHistory: React.FC = () => {
                         mode="contained"
                         text="Show more"
                         onPressFunction={handleLoadMore}
-                        style={{marginTop: 10}}
+                        style={{marginTop: 10, marginBottom: height * 0.2}}
                     />
                 )}
 
                 {!hasMore && (
-                    <Text style={{}}>You literally hit rock bottom!</Text>
+                    <Text style={styles.bottom_text}>You literally hit rock bottom!</Text>
                 )}
             </>
         )
@@ -138,7 +143,6 @@ const PurchaseHistory: React.FC = () => {
                             style={{
                                 alignSelf: "center",
                                 width: width * 0.9,
-                                paddingBottom: height * 0.1,
                             }}
                             data={data}
                             keyExtractor={(item, index) => item.id}
@@ -187,6 +191,14 @@ const makeStyles = (theme) => StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center',
         color: theme.colors.error
+    },
+    bottom_text: {
+        marginTop: 10,
+        marginBottom: height * 0.2,
+        color: theme.colors.error,
+        fontSize: 22,
+        fontFamily: 'Inter-Black',
+        alignSelf: 'center'
     }
 });
 

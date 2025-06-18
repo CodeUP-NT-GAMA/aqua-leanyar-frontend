@@ -49,6 +49,10 @@ export class PurchaseHistoryService {
             headers: {
                 "Content-Type": "application/json",
                 "authorization": token
+            },
+            params: {
+                page: pageNumber,
+                size: pageSize
             }
         })
     }

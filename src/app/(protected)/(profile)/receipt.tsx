@@ -10,6 +10,11 @@ import {FileService} from "@/service/FileService";
 
 const {width, height} = Dimensions.get("window");
 
+const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
+
 function calculateTotal(PurchaseItems: PurchaseItem[]) {
     let total = 0;
 
@@ -19,7 +24,7 @@ function calculateTotal(PurchaseItems: PurchaseItem[]) {
         });
     }
 
-    return total;
+    return formatter.format(total);
 }
 
 function trimDate(date: string) {

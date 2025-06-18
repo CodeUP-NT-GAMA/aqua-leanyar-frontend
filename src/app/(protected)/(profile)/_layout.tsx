@@ -8,6 +8,10 @@ export default function Layout() {
                 title: "Purchase History", headerShown: true,
                 headerTitleStyle: {fontFamily: "Inter-Black", fontWeight: "normal"}
             }}/>
+            <Stack.Screen name="reciept" options={{
+                title: "Purchase Order", headerShown: false,
+                headerTitleStyle: {fontFamily: "Inter-Black", fontWeight: "normal"}
+            }}/>
         </Stack>
     );
 }

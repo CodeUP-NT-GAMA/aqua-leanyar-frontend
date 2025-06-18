@@ -53,4 +53,16 @@ export class PurchaseHistoryService {
         })
     }
 
+    static getPurchaseById(token: string, id: number): Promise<AxiosResponse<PurchaseHistoryResponse>> {
+        return axiosInstance.get<PurchaseHistoryResponse>("/purchase/id", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            },
+            params: {
+                id: id
+            }
+        })
+    }
+
 }

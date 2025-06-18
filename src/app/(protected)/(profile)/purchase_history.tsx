@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {History, PurchaseHistoryService, PurchaseItem} from "@/service/PurchaseHistoryService";
 import GeneralButton from "@/components/generic/GeneralButton";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import {router} from "expo-router";
 
 const {width, height} = Dimensions.get("window");
 
@@ -17,6 +18,10 @@ const PurchaseHistory: React.FC = () => {
     const [hasMore, setHasMore] = React.useState(true);
     const [page, setPage] = React.useState(1);
     const [loading, setLoading] = React.useState(true);
+
+    function trimDate(date: string) {
+        return date?.substring(0, 10);
+    }
 
     const fetchHistory = async (pageNumber = 1, pageSize = 12) => {
         try {
@@ -65,7 +70,7 @@ const PurchaseHistory: React.FC = () => {
         }
 
         return (
-            <Card style={{width: "95%", height: height * 0.2, margin: 15}} key={"history-" + item.id} elevation={5}>
+            <Card style={{width: "95%", height: "auto", margin: 15}} key={"history-" + item.id} elevation={5}>
                 <Card.Title
                     title={item.transaction_id}
                     subtitle={item.order_status}
@@ -74,12 +79,16 @@ const PurchaseHistory: React.FC = () => {
                 />
                 <Divider bold={true}/>
                 <Card.Content>
-                    <Text>Order Placed: {item.createdAt}</Text>
-                    <Text>Number of Items: {item.PurchaseItems.length}</Text>
-                    <Text>Order Total: {calculateTotal(item.PurchaseItems)} AUD</Text>
+                    <Text style={styles.bill_info_text}>Order Placed: {trimDate(item.createdAt)}</Text>
+                    <Text style={styles.bill_info_text}>Number of Items: {item.PurchaseItems.length}</Text>
+                    <Text style={styles.bill_info_text}>Order Total: {calculateTotal(item.PurchaseItems)} AUD</Text>
                 </Card.Content>
                 <Card.Actions>
                     <GeneralButton mode="contained" onPressFunction={() => {
+                        router.push({
+                            pathname: '/receipt',
+                            params: {id: item.id, title: item.transaction_id},
+                        });
                     }} text={"View Receipt"} style=""/>
                 </Card.Actions>
             </Card>
@@ -158,6 +167,11 @@ const makeStyles = (theme) => StyleSheet.create({
         width: '100%',
         borderRadius: 50
 
+    },
+    bill_info_text: {
+        padding: 5,
+        fontSize: 15,
+        fontFamily: 'Inter-Black'
     },
     empty_history: {
         height: height * 0.5,

@@ -1,18 +1,15 @@
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
-import {Link, useRouter} from "expo-router";
+import {useRouter} from "expo-router";
 import React, {useContext, useRef, useState} from "react";
 import {AuthContext} from "@/utils/authContext";
 import {Button, Card, Divider, Text, useTheme} from 'react-native-paper';
 import AppBackground from "@/components/generic/AppBackground";
-import GeneralButton from "@/components/generic/GeneralButton";
 import CustomSurface from "@/components/generic/CustomSurface";
 import CustomImageCarousal from "@/components/generic/CustomImageCarousal";
 import PagerView from "react-native-pager-view";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import {useCart} from "@/components/generic/CartContext";
-import ToastManager, {Toast} from 'toastify-react-native'
-import {AnalyticService} from "@/service/AnalyticService";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import ToastManager from 'toastify-react-native'
 
 const {height, width} = Dimensions.get("window");
 const LeftSwimming = props => <FontAwesome name="person-swimming" size={35} color={props.color}/>
@@ -99,27 +96,6 @@ export default function IndexScreen() {
                                 }}>Take me to the store!</Button>
                             </Card.Actions>
                         </Card>
-                    </View>
-
-                    <View>
-                        <Link href="/home-nested" push asChild>
-                            <GeneralButton mode="contained" onPressFunction={() => {
-                                // @ts-ignore
-                                router.push("home-nested")
-                            }} text={"Push to nested"} style={{}}/>
-                        </Link>
-                        {canGoBack ? (
-                            <GeneralButton
-                                text={"Back"}
-                                onPressFunction={() => {
-                                    router.back();
-                                }}
-                                mode="contained"
-                                style={{}}
-                            />
-                        ) : null}
-                        <GeneralButton mode="contained" text="Log out!" onPressFunction={authState.logOut}
-                                       style={{backgroundColor: theme.colors.primary}}/>
                     </View>
                 </View>
                 <ToastManager/>

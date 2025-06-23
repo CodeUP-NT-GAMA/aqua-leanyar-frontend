@@ -18,7 +18,7 @@ export default function SecondScreen() {
     const styles = makeStyles(theme);
 
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(true);
@@ -81,7 +81,7 @@ export default function SecondScreen() {
                                     <GeneralButton mode={"contained"} text={"Tell me more!"} style={{}}
                                                    onPressFunction={() => {
                                                        router.push({
-                                            pathname: 'activity/[id]',
+                                            pathname: '/activity/[id]',
                                             params: {id: activity.id, title: activity.name},
                                         });
                                     }}>Tell me more!</GeneralButton>

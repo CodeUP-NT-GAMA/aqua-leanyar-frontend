@@ -98,4 +98,33 @@ export class ProductService {
             }
         })
     }
+
+    static async searchProduct(
+        token: string,
+        params: {
+            types?: string | null;
+            page?: number;
+            page_size?: number;
+            name?: string;
+            start_price?: number;
+            end_price?: number;
+            in_stock?: string;
+          }
+    ): Promise<AxiosResponse<ProductResponse>> {
+        return axiosInstance.get<ProductResponse>("/products/search", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": token
+            },
+            params: {
+                types: params.types ?? undefined,
+                page: params.page ?? 1,
+                size: params.page_size ?? 12,
+                name: params.name,
+                start_price: params.start_price,
+                end_price: params.end_price,
+                in_stock: params.in_stock,
+              }
+        })
+    }
 }

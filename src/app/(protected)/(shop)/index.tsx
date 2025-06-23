@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBackground from "@/components/generic/AppBackground";
-import {Card, Chip, Divider, Searchbar, Text, useTheme} from 'react-native-paper';
+import { Card, Chip, Divider, Searchbar, Text, useTheme } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Dimensions, FlatList, ScrollView, StyleSheet, View} from 'react-native';
-import {router} from 'expo-router';
-import {ProductService} from "@/service/ProductService";
+import { Dimensions, FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
+import { ProductService } from "@/service/ProductService";
 import GeneralButton from "@/components/generic/GeneralButton";
-import {FileService} from "@/service/FileService";
+import { FileService } from "@/service/FileService";
 
 
-const {height, width} = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 export default function ShopScreen() {
 
@@ -33,6 +33,10 @@ export default function ShopScreen() {
         );
     };
 
+    useEffect(() => {
+        performeSearch();
+    }, [selectedChips, searchQuery])
+
     const fetchProductTypes = async (pageNumber = 1, pageSize = 100) => {
         try {
             const value = await AsyncStorage.getItem("auth-key");
@@ -46,6 +50,30 @@ export default function ShopScreen() {
             console.error('Error fetching posts:', error);
         }
     };
+    const performeSearch = async (pageNumber = 1, pageSize = 12) => {
+        try {
+            const value = await AsyncStorage.getItem("auth-key");
+            // @ts-ignore
+            const auth = JSON.parse(value);
+            const typesParam = selectedChips.length > 0
+                ? selectedChips.map(chip => chip.id).join(',')
+                : null;
+            const response = await ProductService.searchProduct(auth.token, {
+                types: typesParam,
+                name: searchQuery,
+                page: pageNumber,
+                page_size: pageSize,
+            });
+            // @ts-ignore
+            setData(response.data.result.data);
+            setPage(response.data.result.pagination.current_page);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
 
     const fetchProducts = async (pageNumber = 1, pageSize = 12) => {
         try {
@@ -78,23 +106,23 @@ export default function ShopScreen() {
     }, []);
 
 
-    const renderProduct = ({item}: { item:any }) => {
+    const renderProduct = ({ item }: { item: any }) => {
 
         return (
             <Card style={styles.activity_card} key={"activity-" + item.id} elevation={5}>
 
-                <Card.Cover source={{uri: FileService.buildURI(item.ProductMedia[0].MediaId)}}/>
+                <Card.Cover source={{ uri: FileService.buildURI(item.ProductMedia[0].MediaId) }} />
                 <Card.Content>
                     <Text variant="bodyMedium" style={styles.card_content}>{item.product_name}</Text>
                 </Card.Content>
                 <Card.Actions>
                     <GeneralButton mode={"contained"} text={"View"} style={{}}
-                                   onPressFunction={() => {
-                                       router.push({
-                                           pathname:  '/[id]',
-                                           params: {id: item.product_id, title: item.product_name},
-                                       });
-                                   }}>Go to</GeneralButton>
+                        onPressFunction={() => {
+                            router.push({
+                                pathname: '/[id]',
+                                params: { id: item.product_id, title: item.product_name },
+                            });
+                        }}>Go to</GeneralButton>
                 </Card.Actions>
             </Card>
         )
@@ -109,7 +137,7 @@ export default function ShopScreen() {
                         mode="contained"
                         text="Show more"
                         onPressFunction={handleLoadMore}
-                        style={{marginTop: 10}}
+                        style={{ marginTop: 10 }}
                     />
                 )}
 
@@ -122,7 +150,7 @@ export default function ShopScreen() {
 
     return (
         <AppBackground>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
 
                 <View>
                     <Searchbar style={{
@@ -131,27 +159,27 @@ export default function ShopScreen() {
                         marginTop: height * 0.02,
                         marginBottom: height * 0.01
                     }}
-                               placeholder="Search"
-                               onChangeText={setSearchQuery}
-                               value={searchQuery}
+                        placeholder="Search"
+                        onChangeText={setSearchQuery}
+                        value={searchQuery}
                     />
 
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-                                style={{flexDirection: "row", marginBottom: 10, paddingLeft: 30, height: 30}}>
+                        style={{ flexDirection: "row", marginBottom: 10, paddingLeft: 30, height: 30 }}>
                         {categories.map((cat) => (
-                            <Chip key={cat.id} style={{marginRight: 5,}}
-                                  selected={selectedChips.includes(cat)}
-                                  onPress={() => toggleChip(cat)}
+                            <Chip key={cat.id} style={{ marginRight: 5, }}
+                                selected={selectedChips.includes(cat)}
+                                onPress={() => toggleChip(cat)}
                             >{cat.description}</Chip>
                         ))}
                     </ScrollView>
                 </View>
 
-                <Divider/>
+                <Divider />
 
                 {data &&
 
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                         <FlatList
                             style={{
                                 alignSelf: "center",
@@ -162,8 +190,8 @@ export default function ShopScreen() {
                             keyExtractor={(item, index) => item.product_id}
                             numColumns={2}
                             horizontal={false}
-                            contentContainerStyle={{flexGrow: 1, paddingBottom: 100}}
-                            columnWrapperStyle={{gap: 10, paddingTop: 10}}
+                            contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+                            columnWrapperStyle={{ gap: 10, paddingTop: 10 }}
                             showsVerticalScrollIndicator={false}
                             renderItem={renderProduct}
                             ListFooterComponent={renderBottom}

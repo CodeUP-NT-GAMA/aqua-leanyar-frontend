@@ -1,10 +1,10 @@
-import {View, Dimensions, ScrollView, StyleSheet} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {useRouter} from "expo-router";
 import AppBackground from "@/components/generic/AppBackground";
 import {Card, Divider, Text, useTheme} from 'react-native-paper';
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import {ActivityService} from "@/service/ActivityService";
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GeneralButton from "@/components/generic/GeneralButton";
 import {FileService} from "@/service/FileService";
@@ -18,7 +18,7 @@ export default function SecondScreen() {
     const styles = makeStyles(theme);
 
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(true);
@@ -35,6 +35,7 @@ export default function SecondScreen() {
             if (!response.data.result.pagination.next_page) {
                 setHasMore(false);
             } else {
+                // @ts-ignore
                 setData(prev => [...prev, ...response.data.result.data]);
                 setPage(response.data.result.pagination.current_page);
             }
@@ -55,6 +56,10 @@ export default function SecondScreen() {
         }
     };
 
+    const generateIcon = (icon: string) => {
+        return (<FontAwesome name={icon} size={35} color={theme.colors.primary}/>)
+    }
+
     return (
         <AppBackground>
             <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
@@ -64,19 +69,19 @@ export default function SecondScreen() {
                         data.map(activity => (
                             <Card style={styles.activity_card} key={"activity-" + activity.id} elevation={5}>
                                 <Card.Title title={activity.name} subtitle={activity.short_name}
-                                            left={() => <FontAwesome name="person-swimming" size={35}
-                                                                     color={theme.colors.primary}/>}
+                                            left={() => generateIcon(activity.icon)}
                                             titleStyle={styles.card_title}/>
                                 <Divider bold={true}/>
                                 <Card.Cover source={{uri: FileService.buildURI(activity.ActivityMedia[0].MediaId)}}/>
                                 <Card.Content>
-                                    <Text variant="bodyMedium" style={styles.card_content}>{activity.description}</Text>
+                                    <Text variant="bodyMedium"
+                                          style={styles.card_content}>{activity.introduction}</Text>
                                 </Card.Content>
                                 <Card.Actions>
                                     <GeneralButton mode={"contained"} text={"Tell me more!"} style={{}}
                                                    onPressFunction={() => {
-                                        router.push({
-                                            pathname: 'activity/[id]',
+                                                       router.push({
+                                            pathname: '/activity/[id]',
                                             params: {id: activity.id, title: activity.name},
                                         });
                                     }}>Tell me more!</GeneralButton>
@@ -86,7 +91,8 @@ export default function SecondScreen() {
                     }
 
                     {hasMore && !loading && (
-                        <GeneralButton mode={"contained"} text={"Show more"} onPressFunction={handleLoadMore}/>
+                        <GeneralButton mode={"contained"} text={"Show more"} onPressFunction={handleLoadMore}
+                                       style={{}}/>
                     )}
 
                     {!hasMore && <Text style={styles.endText}>You have got them all!</Text>}
@@ -120,6 +126,7 @@ const makeStyles = (theme) => StyleSheet.create({
     },
     card_content: {
         paddingTop: 10,
+        fontSize: 17,
     },
     endText: {
         alignSelf: "center",
@@ -128,21 +135,6 @@ const makeStyles = (theme) => StyleSheet.create({
         color: theme.colors.error
     }
 });
-
-
-// <View className="justify-center flex-1 p-4">
-//     <AppText center>Second Screen</AppText>
-//     <Link href="/activity/nested" push asChild>
-//         <Button title="Push to /activity/nested"/>
-//     </Link>
-//     <Button
-//         title="Back"
-//         theme="secondary"
-//         onPress={() => {
-//             router.back();
-//         }}
-//     />
-// </View>
 
 /**
  * /index

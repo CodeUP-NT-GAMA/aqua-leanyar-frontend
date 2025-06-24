@@ -32,6 +32,8 @@ export default function ThirdScreen() {
             {cartContext?.count != 0 && <StripeProvider>
                 <FlatList
                     data={cartContext?.items}
+                    contentContainerStyle={{padding: 0}}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({item}) => <CartItem item={item} theme={theme}
                                                       removeMethod={cartContext?.removeItem}/>}
                     keyExtractor={item => item.id}

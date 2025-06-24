@@ -1,50 +1,58 @@
-# Welcome to your Expo app 👋
+# AquaLeanyer Frontend 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=CodeUP-NT-GAMA_aqua-leanyar-frontend&token=3061d11b99f6e74856d72658a8830a9c6db15a90)](https://sonarcloud.io/summary/new_code?id=CodeUP-NT-GAMA_aqua-leanyar-frontend)
 
-## Get started
+# Waterpark React Native App (Expo)
 
-1. Install dependencies
+This is a React Native mobile application for a waterpark, built using the [Expo](https://expo.dev/) framework.
 
+## Prerequisites
+
+- Node.js and npm installed ([Download Node.js](https://nodejs.org/))
+- Expo CLI installed globally:
+  ```bash
+  npm install -g expo-cli
+  ```
+- Expo Go mobile application installed on your smartphone:
+   - [Download for Android (Google Play Store)](https://play.google.com/store/apps/details?id=host.exp.exponent)
+   - [Download for iOS (Apple App Store)](https://apps.apple.com/app/expo-go/id982107779)
+
+## Environment Configuration
+
+Create a `.env` file in the root directory of the project with the following content:
+
+```env
+STRIPE_SECRET_KEY=must be obtained from stripe
+```
+
+## Backend Configuration
+
+In the file `src/utils/backend.tsx`, update the `baseURL` to point to your local or remote backend server. For example:
+
+```ts
+export const axiosInstance = axios.create({
+   baseURL: 'http://localhost:3000/', // Change this to your backend URL
+   timeout: 999999,
+   headers: {'X-Custom-Header': 'App Calling'}
+});
+```
+
+## Installation & Execution
+
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. Start the Expo development server:
    ```bash
-    npx expo start
+   npm expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Use the Expo Go app on your smartphone to scan the QR code and launch the application.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Notes
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Make sure your development machine and smartphone are on the same Wi-Fi network for Expo Go to connect properly.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=CodeUP-NT-GAMA_aqua-leanyar-frontend)

@@ -34,7 +34,7 @@ export default function ShopScreen() {
     };
 
     useEffect(() => {
-        performeSearch();
+       performeSearch();
     }, [selectedChips, searchQuery])
 
     const fetchProductTypes = async (pageNumber = 1, pageSize = 100) => {
@@ -85,7 +85,11 @@ export default function ShopScreen() {
                 setHasMore(false);
             }
             // @ts-ignore
-            setData(prev => [...prev, ...response.data.result.data]);
+            setData(prev => {
+                const existingIds = new Set(prev.map(p => p.id));
+                const newItems = response.data.result.data.filter(p => !existingIds.has(p.id));
+                return [...prev, ...newItems];
+            });
             setPage(response.data.result.pagination.current_page);
         } catch (error) {
             console.error('Error fetching posts:', error);
